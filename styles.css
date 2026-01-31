@@ -159,7 +159,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.5rem;
+    padding: 0.5rem 1.5rem;
 }
 
 .logo {
@@ -173,7 +173,7 @@ a:hover {
 }
 
 .logo-img {
-    height: 84px;
+    height: 48px;
     width: auto;
     object-fit: contain;
 }
@@ -312,7 +312,7 @@ a:hover {
     min-height: 90vh;
     display: flex;
     align-items: center;
-    padding-top: calc(80px + env(safe-area-inset-top));
+    padding-top: calc(60px + env(safe-area-inset-top));
     overflow: hidden;
 }
 
@@ -346,6 +346,21 @@ a:hover {
 
 .hero-content {
     max-width: 540px;
+}
+
+.hero-company {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.hero-founded {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
 }
 
 .hero-title {
@@ -551,6 +566,55 @@ a:hover {
     background: var(--bg);
 }
 
+/* Horizontal scroll services (homepage) */
+.services-horizontal {
+    padding: 3rem 0 4rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.services-horizontal .services-header {
+    text-align: center;
+    padding: 0 1.5rem 1.5rem;
+}
+
+.services-scroll-hint {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    opacity: 0.8;
+}
+
+.services-scroll-wrapper {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.services-scroll-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.services-track {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 1.5rem 2rem;
+    width: max-content;
+    min-height: 420px;
+}
+
+.services-horizontal .service-card {
+    flex: 0 0 min(380px, calc(100vw - 4rem));
+    width: min(380px, calc(100vw - 4rem));
+    max-width: 380px;
+    scroll-snap-align: start;
+}
+
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -683,6 +747,74 @@ a:hover {
     color: var(--text);
     margin: 0;
     font-weight: 500;
+}
+
+/* ============================================
+   Pricing Highlights (Homepage)
+   ============================================ */
+
+.pricing-highlights {
+    padding: var(--section-padding);
+    background: var(--bg-alt);
+}
+
+.pricing-highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.pricing-highlight-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.pricing-highlight-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.pricing-highlight-fee {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.pricing-highlight-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.pricing-highlight-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.pricing-highlights-cta {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+@media (max-width: 900px) {
+    .pricing-highlights-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .pricing-highlights-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ============================================
@@ -968,15 +1100,14 @@ a:hover {
 
 .resources-select {
     width: auto;
-    max-width: 220px;
-    min-width: 160px;
-    padding: 0.5rem 0.75rem;
+    max-width: 160px;
+    min-width: 120px;
+    padding: 0.4rem 0.6rem;
     border: 2px solid var(--border);
     border-radius: 8px;
     font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.4;
-    height: auto;
+    font-size: 0.9rem;
+    line-height: 1.3;
     -webkit-appearance: none;
     appearance: none;
 }
@@ -1236,6 +1367,15 @@ a:hover {
     background: #e8f5e9;
 }
 
+.pricing-cta {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.pricing-cta p {
+    margin-bottom: 1.5rem;
+}
+
 /* ============================================
    Footer
    ============================================ */
@@ -1432,7 +1572,8 @@ a:hover {
     }
     
     .resources-select {
-        min-width: 140px;
+        min-width: 110px;
+        max-width: 150px;
         font-size: 16px;
     }
     
@@ -1577,4 +1718,59 @@ a:hover {
 .efiling-popup-highlight {
     color: #dc2626;
     font-weight: 700;
+}
+
+/* ============================================
+   Floating Contact Icons (Homepage)
+   ============================================ */
+
+.floating-contact {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: env(safe-area-inset-left);
+    padding-bottom: env(safe-area-inset-bottom);
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 0.3s var(--ease-out-expo), visibility 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
+}
+
+.floating-contact.floating-contact--hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.floating-contact.floating-contact--scrolling {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(8px);
+}
+
+.floating-contact-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    box-shadow: var(--shadow-lg);
+    transition: transform var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.floating-contact-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.08);
+    box-shadow: var(--shadow-xl);
 }

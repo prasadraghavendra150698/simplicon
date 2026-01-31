@@ -41,13 +41,15 @@
         <div class="hero-bg"></div>
         <div class="container hero-inner">
             <div class="hero-content">
+                <p class="hero-company" data-animate>Simplicon Tax Advisors LLP</p>
                 <h1 class="hero-title" data-animate>
-                    Local, State<br>
-                    <span class="hero-title-accent">or Federal Taxes</span>
+                    Simplifying Taxes,<br>
+                    <span class="hero-title-accent">Amplifying Returns</span>
                 </h1>
                 <p class="hero-subtitle" data-animate data-animate-delay="100">
                     Maximum Tax Refunds With The Best In Class Customer Service At An Affordable & Lowest Tax Filing Fee
                 </p>
+                <p class="hero-founded" data-animate data-animate-delay="50">Founded in 2024</p>
                 <div class="hero-buttons" data-animate data-animate-delay="200">
                     <a href="contact.html" class="btn btn-primary">Get in touch</a>
                     <a href="about.html" class="btn btn-secondary">Learn more</a>
@@ -59,15 +61,18 @@
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="container">
+    <!-- Services Section - Horizontal scroll on wheel -->
+    <section class="services services-horizontal" id="services">
+        <div class="services-header">
             <h2 class="section-title" data-animate>Our Services</h2>
             <p class="section-subtitle" data-animate data-animate-delay="50">
-                Expert tax and advisory services for individuals and businesses. Over 15 years of professional experience.
+                Expert tax and advisory services for individuals and businesses. 2+ years of professional experience.
             </p>
-            <div class="services-grid">
-                <div class="service-card" data-animate data-animate-delay="0">
+            <p class="services-scroll-hint">Scroll horizontally to explore →</p>
+        </div>
+        <div class="services-scroll-wrapper" id="servicesScrollWrapper">
+            <div class="services-track" id="servicesTrack">
+                <div class="service-card" data-animate>
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&q=80" alt="Individual tax filing">
                         <div class="service-icon-wrap">
@@ -78,9 +83,9 @@
                     <p>Federal, State and Local Tax Filing for individuals. FBAR, FATCA, and comprehensive representation services.</p>
                     <a href="pricing.html#individual" class="service-link">Learn more →</a>
                 </div>
-                <div class="service-card" data-animate data-animate-delay="100">
+                <div class="service-card" data-animate>
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" alt="Business tax filing">
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&q=80" alt="Business tax filing">
                         <div class="service-icon-wrap">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                         </div>
@@ -89,7 +94,7 @@
                     <p>Tax planning and filing strategies for small and medium business enterprises. Partnership, S-Corp, C-Corp.</p>
                     <a href="pricing.html#business" class="service-link">Learn more →</a>
                 </div>
-                <div class="service-card" data-animate data-animate-delay="200">
+                <div class="service-card" data-animate>
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&q=80" alt="International tax filing">
                         <div class="service-icon-wrap">
@@ -99,39 +104,6 @@
                     <h3>International Tax Filing</h3>
                     <p>Foreign earned income exclusions, tax treaties, expat situations, and cross-border tax compliance.</p>
                     <a href="pricing.html#international" class="service-link">Learn more →</a>
-                </div>
-                <div class="service-card" data-animate data-animate-delay="300" id="itin">
-                    <div class="service-image">
-                        <img src="/ITIN.png" alt="Apply for ITIN">
-                        <div class="service-icon-wrap">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                        </div>
-                    </div>
-                    <h3>Apply for ITIN</h3>
-                    <p>ITIN application for yourself, spouse, or dependents. Expert guidance through the entire process.</p>
-                    <a href="pricing.html#itin" class="service-link">Learn more →</a>
-                </div>
-                <div class="service-card" data-animate data-animate-delay="400">
-                    <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80" alt="Audit representation">
-                        <div class="service-icon-wrap">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        </div>
-                    </div>
-                    <h3>Audit Representation</h3>
-                    <p>Professional representation before the IRS. Free lifetime audit defense for our clients.</p>
-                    <a href="pricing.html#audit" class="service-link">Learn more →</a>
-                </div>
-                <div class="service-card" data-animate data-animate-delay="500">
-                    <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80" alt="Amendments">
-                        <div class="service-icon-wrap">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                        </div>
-                    </div>
-                    <h3>Amendments</h3>
-                    <p>Correct prior year tax returns. Expert amendments for federal and state filings.</p>
-                    <a href="pricing.html#amendments" class="service-link">Learn more →</a>
                 </div>
             </div>
         </div>
@@ -152,7 +124,7 @@
                 </div>
                 <div class="why-us-item" data-animate data-animate-delay="100">
                     <span class="why-us-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>
-                    <p>Over 15 Years of Expertise in Tax Filing</p>
+                    <p>2+ Years of Expertise in Tax Filing</p>
                 </div>
                 <div class="why-us-item" data-animate data-animate-delay="150">
                     <span class="why-us-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>
@@ -175,16 +147,16 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item" data-animate>
-                    <span class="stat-number">500+</span>
-                    <span class="stat-label">Tax Experts</span>
-                </div>
-                <div class="stat-item" data-animate data-animate-delay="100">
-                    <span class="stat-number">100K+</span>
+                    <span class="stat-number">7k+</span>
                     <span class="stat-label">Happy Clients</span>
                 </div>
-                <div class="stat-item" data-animate data-animate-delay="200">
-                    <span class="stat-number">15+</span>
+                <div class="stat-item" data-animate data-animate-delay="100">
+                    <span class="stat-number">2+</span>
                     <span class="stat-label">Years of Experience</span>
+                </div>
+                <div class="stat-item" data-animate data-animate-delay="200">
+                    <span class="stat-number">2024</span>
+                    <span class="stat-label">Founded</span>
                 </div>
             </div>
         </div>
@@ -245,7 +217,7 @@
                     <a href="index.html" class="logo">
                         <img src="/Simplicon_logo.png" alt="Simplicon Tax" class="logo-img">
                     </a>
-                    <p>Simplicon Tax Advisors LLP is a dedicated US Tax Filing Company formed by professionals in the year 2009. We at Simplicon Tax Advisors LLP offer a wide range of services to Salaried, Self-Employed & High Net worth Individuals and Small Business Enterprises with respect to filing of Income Tax returns in USA. As a practice, our firm hires experienced professionals to serve our clients which enable us to provide the highest quality of service available.</p>
+                    <p>Simplicon Tax Advisors LLP is a dedicated US Tax Filing Company founded in 2024. We offer a wide range of services to Salaried, Self-Employed & High Net worth Individuals and Small Business Enterprises with respect to filing of Income Tax returns in USA. As a practice, our firm hires experienced professionals to serve our clients which enable us to provide the highest quality of service available.</p>
                 </div>
                 <div class="footer-links">
                     <h4>Quick links</h4>
@@ -278,6 +250,16 @@
             </div>
         </div>
     </footer>
+
+    <!-- Floating Contact Icons (Homepage only) -->
+    <div class="floating-contact">
+        <a href="mailto:contact@ustaxfiler.com" class="floating-contact-btn" aria-label="Email us" title="Email us">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+        <a href="tel:+1-470-444-8100" class="floating-contact-btn" aria-label="Call us" title="Call us">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+    </div>
 
     <script type="module" src="/src/main.ts"></script>
 </body>

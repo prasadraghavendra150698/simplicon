@@ -10,6 +10,8 @@ import { initScrollEffects } from './scroll-effects';
 import { initAnimations } from './animations';
 import { initEfilingPopupModule } from './efiling-popup';
 import { initHeroCarousel } from './hero-carousel';
+import { initServicesHorizontalScroll } from './services-horizontal-scroll';
+import { initFloatingContact } from './floating-contact';
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
@@ -19,4 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initAnimations();
   initEfilingPopupModule();
   initHeroCarousel();
+  initServicesHorizontalScroll();
+  initFloatingContact();
 });
