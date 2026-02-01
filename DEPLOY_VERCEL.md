@@ -12,13 +12,16 @@ Add these in **Vercel Dashboard → Project → Settings → Environment Variabl
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `RESEND_API_KEY` | Resend API key for sending emails | Yes |
-| `ADMIN_EMAIL` | Where form submissions go (default: info@simplicontax.com) | No |
-| `FROM_EMAIL` | Sender email (default: onboarding@resend.dev) | No |
+| `SMTP_HOST` | SMTP server (e.g. smtp.gmail.com, smtp.office365.com) | Yes |
+| `SMTP_PORT` | Port (465 for SSL, 587 for TLS) | Yes |
+| `SMTP_USER` | SMTP username / email | Yes |
+| `SMTP_PASS` | SMTP password or app password | Yes |
+| `EMAIL_FROM` | Sender email address | Yes |
+| `EMAIL_TO` | Where form submissions are sent | Yes |
 
 ## Contact Form
 
-The contact form submits to `/api/submit-contact` (Vercel serverless function). Form submissions are sent to `ADMIN_EMAIL` and users receive an acknowledgement email.
+The contact form submits to `/api/submit-contact` (Vercel serverless function). Form submissions are sent to `EMAIL_TO` via Nodemailer.
 
 ## Local Development
 

@@ -64,7 +64,13 @@ export function initContactForm(): void {
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          phone: formData.phone || undefined,
+          subject: formData.subject || undefined,
+        }),
       });
 
       const data = await res.json().catch(() => ({}));
