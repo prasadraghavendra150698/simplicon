@@ -12,11 +12,10 @@ interface FormData {
 }
 
 function getSubmitUrl(): string {
-  // Vercel: /api/submit-contact
+  // Vercel: /api/submit-contact (relative = same origin, no full-domain issues)
   // Netlify: /.netlify/functions/submit-contact
   if (typeof window === 'undefined') return '';
-  const base = window.location.origin;
-  return `${base}/api/submit-contact`;
+  return '/api/submit-contact';
 }
 
 export function initContactForm(): void {

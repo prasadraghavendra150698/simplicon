@@ -73,6 +73,7 @@ function acknowledgementEmailHtml(name: string, logoUrl: string): string {
 }
 
 export default async function handler(request: Request): Promise<Response> {
+  console.log('CONTACT API HIT');
   if (request.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
   }
