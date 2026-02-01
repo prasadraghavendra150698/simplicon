@@ -3,12 +3,20 @@
  * Uses form submit event with preventDefault - no page reload
  */
 
+const FETCH_TIMEOUT_MS = 15000;
+
 interface FormPayload {
   name: string;
   email: string;
   phone?: string;
   subject?: string;
   message: string;
+}
+
+function fetchWithTimeout(url: string, options: RequestInit, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timeoutId));
 }
 
 export function initContactForm(): void {
@@ -42,18 +50,33 @@ export function initContactForm(): void {
     }
 
     try {
-      const res = await fetch('/api/submit-contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          message,
-          phone: (form.querySelector('#phone') as HTMLInputElement)?.value?.trim() || undefined,
-          subject: (form.querySelector('#subject') as HTMLSelectElement)?.value || undefined,
-        } as FormPayload),
-      });
+      const isLocalDev = typeof window !== 'undefined' && window.location.hostname === 'localhost' && window.location.port !== '3000';
+      if (isLocalDev) {
+        console.log('Local dev: API not available, simulating success');
+        form.reset();
+        form.style.display = 'none';
+        formSuccess.style.display = 'block';
+        return;
+      }
 
+      console.log('FETCH STARTED');
+      const res = await fetchWithTimeout(
+        '/api/submit-contact',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            message,
+            phone: (form.querySelector('#phone') as HTMLInputElement)?.value?.trim() || undefined,
+            subject: (form.querySelector('#subject') as HTMLSelectElement)?.value || undefined,
+          } as FormPayload),
+        },
+        FETCH_TIMEOUT_MS
+      );
+
+      console.log('FETCH COMPLETE', res.status);
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
@@ -65,8 +88,18 @@ export function initContactForm(): void {
       form.style.display = 'none';
       formSuccess.style.display = 'block';
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Something went wrong. Please try again or email us directly.';
-      alert(msg);
+      if (err instanceof Error) {
+        if (err.name === 'AbortError') {
+          console.error('FETCH TIMEOUT');
+          alert('Request timed out. Please try again or email us directly at info@simplicontaxadvisors.com');
+        } else {
+          console.error('FETCH ERROR', err.message);
+          alert(err.message);
+        }
+      } else {
+        console.error('FETCH ERROR', err);
+        alert('Something went wrong. Please try again or email us directly at info@simplicontaxadvisors.com');
+      }
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
