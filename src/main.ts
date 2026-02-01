@@ -14,7 +14,7 @@ import { initServicesHorizontalScroll } from './services-horizontal-scroll';
 import { initFloatingContact } from './floating-contact';
 import { initWhyUsCarousel } from './why-us-carousel';
 
-document.addEventListener('DOMContentLoaded', () => {
+function init(): void {
   initMobileNav();
   initTestimonials();
   initContactForm();
@@ -25,4 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initServicesHorizontalScroll();
   initWhyUsCarousel();
   initFloatingContact();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

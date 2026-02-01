@@ -1,21 +1,14 @@
 /**
- * Contact Form Handler - Submits to Netlify Function
- * Admin receives form copy | User receives acknowledgement
+ * Contact Form Handler - Submits to /api/submit-contact
+ * Uses form submit event with preventDefault - no page reload
  */
 
-interface FormData {
+interface FormPayload {
   name: string;
   email: string;
-  phone: string;
-  subject: string;
+  phone?: string;
+  subject?: string;
   message: string;
-}
-
-function getSubmitUrl(): string {
-  // Vercel: /api/submit-contact (relative = same origin, no full-domain issues)
-  // Netlify: /.netlify/functions/submit-contact
-  if (typeof window === 'undefined') return '';
-  return '/api/submit-contact';
 }
 
 export function initContactForm(): void {
@@ -24,8 +17,12 @@ export function initContactForm(): void {
 
   if (!form || !formSuccess) return;
 
-  form.addEventListener('submit', async (e: Event) => {
-    e.preventDefault(); // Prevents page reload
+  console.log('CONTACT FORM JS LOADED');
+
+  form.addEventListener('submit', async (e: SubmitEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('SUBMIT HANDLER FIRED');
 
     const name = (form.querySelector('#name') as HTMLInputElement)?.value?.trim();
     const email = (form.querySelector('#email') as HTMLInputElement)?.value?.trim();
@@ -36,16 +33,8 @@ export function initContactForm(): void {
       return;
     }
 
-    const formData: FormData = {
-      name,
-      email,
-      phone: (form.querySelector('#phone') as HTMLInputElement)?.value?.trim() || '',
-      subject: (form.querySelector('#subject') as HTMLSelectElement)?.value || 'general',
-      message,
-    };
-
     const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-    const originalText = submitBtn?.textContent || 'Send Message';
+    const originalText = submitBtn?.textContent ?? 'Send Message';
 
     if (submitBtn) {
       submitBtn.disabled = true;
@@ -53,33 +42,23 @@ export function initContactForm(): void {
     }
 
     try {
-      const url = getSubmitUrl();
-      if (!url || (url.includes('localhost') && !url.includes('3000'))) {
-        // Local Vite dev - API not available, show success for testing. Run "vercel dev" for full form testing.
-        form.style.display = 'none';
-        formSuccess.style.display = 'block';
-        return;
-      }
-
-      const res = await fetch(url, {
+      const res = await fetch('/api/submit-contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          phone: formData.phone || undefined,
-          subject: formData.subject || undefined,
-        }),
+          name,
+          email,
+          message,
+          phone: (form.querySelector('#phone') as HTMLInputElement)?.value?.trim() || undefined,
+          subject: (form.querySelector('#subject') as HTMLSelectElement)?.value || undefined,
+        } as FormPayload),
       });
 
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        if (res.status === 404) {
-          throw new Error('Form service not available. Please run "vercel dev" for local testing, or deploy to Vercel.');
-        }
-        throw new Error(data.error || `Request failed (${res.status})`);
+        const msg = data.error ?? `Request failed (${res.status})`;
+        throw new Error(msg);
       }
 
       form.reset();
