@@ -3,7 +3,7 @@
  * Uses form submit event with preventDefault - no page reload
  */
 
-const FETCH_TIMEOUT_MS = 10000;
+const FETCH_TIMEOUT_MS = 25000;
 
 interface FormPayload {
   name: string;
@@ -103,13 +103,15 @@ export function initContactForm(): void {
     } catch (err) {
       const isTimeout = err instanceof Error && err.message === 'Request timed out';
       if (isTimeout) {
-        console.error('FETCH TIMEOUT');
-        alert('Request timed out. Please try again or email us directly at info@simplicontaxadvisors.com');
+        console.error('[CONTACT FORM] TIMEOUT after', FETCH_TIMEOUT_MS / 1000, 'seconds');
+        console.error('[CONTACT FORM] DIAGNOSTIC: 1) Open Vercel Dashboard → Project → Logs. 2) Submit form again. 3) Do you see "[CONTACT API] 1. REQUEST RECEIVED"? If NO → API route not hit (check Vercel deployment). If YES → Which step number is last? Step 6 = SMTP verify hanging. Step 8 = sendMail hanging.');
+        console.error('[CONTACT FORM] 4) Open DevTools → Network tab. Filter by "submit-contact". Is request "pending" or completed? What status?');
+        alert('Request timed out. Open browser Console (F12) for diagnostic steps. Or email us at info@simplicontaxadvisors.com');
       } else if (err instanceof Error) {
-        console.error('FETCH ERROR', err.message);
+        console.error('[CONTACT FORM] ERROR:', err.message);
         alert(err.message);
       } else {
-        console.error('FETCH ERROR', err);
+        console.error('[CONTACT FORM] ERROR:', err);
         alert('Something went wrong. Please try again or email us directly at info@simplicontaxadvisors.com');
       }
     } finally {
