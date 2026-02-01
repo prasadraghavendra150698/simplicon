@@ -19,13 +19,13 @@ function getSubmitUrl(): string {
 }
 
 export function initContactForm(): void {
-  const form = document.getElementById('contactForm') as HTMLFormElement | null;
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const formSuccess = document.getElementById('formSuccess') as HTMLDivElement | null;
 
   if (!form || !formSuccess) return;
 
   form.addEventListener('submit', async (e: Event) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevents page reload
 
     const name = (form.querySelector('#name') as HTMLInputElement)?.value?.trim();
     const email = (form.querySelector('#email') as HTMLInputElement)?.value?.trim();
