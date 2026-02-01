@@ -12,34 +12,35 @@ export function initFloatingContact() {
 
   if (!floatingContact || !servicesSection) return;
 
+  const fc = floatingContact;
+  const ss = servicesSection;
   let scrollTimeout: number | null = null;
-  let lastScrollY = window.scrollY;
 
   // Initially hidden - only show after passing services
-  floatingContact.classList.add('floating-contact--hidden');
-  floatingContact.classList.add('floating-contact--scrolling'); // Start as "scrolling"
+  fc.classList.add('floating-contact--hidden');
+  fc.classList.add('floating-contact--scrolling'); // Start as "scrolling"
 
   function updateVisibility() {
-    const servicesRect = servicesSection.getBoundingClientRect();
+    const servicesRect = ss.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
 
     // Show only when user has scrolled past the services section (bottom of services above viewport)
     const hasPassedServices = servicesRect.bottom < viewportHeight * 0.3;
 
     if (hasPassedServices) {
-      floatingContact.classList.remove('floating-contact--hidden');
+      fc.classList.remove('floating-contact--hidden');
     } else {
-      floatingContact.classList.add('floating-contact--hidden');
+      fc.classList.add('floating-contact--hidden');
     }
   }
 
   function onScroll() {
     // Hide while scrolling
-    floatingContact.classList.add('floating-contact--scrolling');
+    fc.classList.add('floating-contact--scrolling');
 
     if (scrollTimeout) clearTimeout(scrollTimeout);
     scrollTimeout = window.setTimeout(() => {
-      floatingContact.classList.remove('floating-contact--scrolling');
+      fc.classList.remove('floating-contact--scrolling');
       scrollTimeout = null;
     }, SCROLL_DEBOUNCE_MS);
 
