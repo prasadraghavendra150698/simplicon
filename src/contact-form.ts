@@ -98,7 +98,7 @@ export function initContactForm(): void {
       }
 
       const url = `${window.location.origin}/api/submit-contact`;
-      console.log('FETCH STARTED', url);
+      console.log('[CONTACT FORM] FETCH STARTED', url);
 
       const fetchPromise = (async (): Promise<void> => {
         const res = await fetch(url, {

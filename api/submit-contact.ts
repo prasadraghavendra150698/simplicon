@@ -4,14 +4,33 @@ const log = (step: string): void => {
   console.log(`[CONTACT API] ${step}`);
 };
 
+const corsHeaders: Record<string, string> = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Max-Age": "86400",
+};
+
+function jsonResponse(body: object, status: number): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json", ...corsHeaders },
+  });
+}
+
 export default async function handler(request: Request): Promise<Response> {
   log("1. REQUEST RECEIVED");
 
+  if (request.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
+  if (request.method === "GET") {
+    return jsonResponse({ ok: true, message: "Contact API reachable" }, 200);
+  }
+
   if (request.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Method Not Allowed" }), {
-      status: 405,
-      headers: { "Content-Type": "application/json" },
-    });
+    return jsonResponse({ error: "Method Not Allowed" }, 405);
   }
 
   try {
@@ -20,10 +39,7 @@ export default async function handler(request: Request): Promise<Response> {
     const { name, email, message, phone, subject } = body;
 
     if (!name?.trim() || !email?.trim() || !message?.trim()) {
-      return new Response(
-        JSON.stringify({ error: "Name, email, and message are required" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
+      return jsonResponse({ error: "Name, email, and message are required" }, 400);
     }
     log("3. Body OK");
 
@@ -36,10 +52,7 @@ export default async function handler(request: Request): Promise<Response> {
 
     if (!host || !port || !user || !pass || !from || !to) {
       log("ERROR: Missing env vars - host:" + !!host + " port:" + !!port + " user:" + !!user + " pass:" + !!pass + " from:" + !!from + " to:" + !!to);
-      return new Response(
-        JSON.stringify({ error: "Email service not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM, EMAIL_TO in Vercel." }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
+      return jsonResponse({ error: "Email service not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM, EMAIL_TO in Vercel." }, 500);
     }
     log("4. Env vars OK");
 
@@ -53,15 +66,11 @@ export default async function handler(request: Request): Promise<Response> {
       greetingTimeout: 10000,
     });
 
-    log("6. Verifying SMTP connection (this may take up to 10s)...");
-    await transporter.verify();
-    log("7. SMTP verified OK");
-
     let emailText = message.trim();
     if (phone?.trim()) emailText += `\n\nPhone: ${phone.trim()}`;
     if (subject) emailText += `\nSubject: ${subject}`;
 
-    log("8. Sending email...");
+    log("6. Sending email...");
     await transporter.sendMail({
       from,
       to,
@@ -70,11 +79,8 @@ export default async function handler(request: Request): Promise<Response> {
       text: emailText,
     });
 
-    log("9. DONE - Email sent");
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    log("7. DONE - Email sent");
+    return jsonResponse({ success: true }, 200);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     log("ERROR at step: " + msg);
@@ -86,9 +92,6 @@ export default async function handler(request: Request): Promise<Response> {
       : err instanceof Error && msg.includes("Invalid login")
       ? "SMTP auth failed. Check SMTP_USER and SMTP_PASS."
       : "Email send failed: " + msg;
-    return new Response(
-      JSON.stringify({ error: userMsg }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return jsonResponse({ error: userMsg }, 500);
   }
 }
