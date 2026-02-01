@@ -12,6 +12,7 @@ import { initEfilingPopupModule } from './efiling-popup';
 import { initHeroCarousel } from './hero-carousel';
 import { initServicesHorizontalScroll } from './services-horizontal-scroll';
 import { initFloatingContact } from './floating-contact';
+import { initWhyUsCarousel } from './why-us-carousel';
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
@@ -22,5 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initEfilingPopupModule();
   initHeroCarousel();
   initServicesHorizontalScroll();
+  initWhyUsCarousel();
   initFloatingContact();
 });

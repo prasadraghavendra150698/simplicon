@@ -1,0 +1,6 @@
+# Simplicon Tax Advisors LLP - robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://simplicontax.com/sitemap.xml

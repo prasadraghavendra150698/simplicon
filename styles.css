@@ -566,38 +566,39 @@ a:hover {
     background: var(--bg);
 }
 
-/* Horizontal scroll services (homepage) */
+/* Sticky scroll container: creates scroll room for section to stick and release */
+.services-scroll-container {
+    height: 200vh;
+    position: relative;
+    z-index: 50;
+    isolation: isolate;
+    margin-bottom: 4rem;
+}
+
+/* Horizontal scroll services (homepage) - sticky while in view, above following sections */
 .services-horizontal {
-    padding: 3rem 0 4rem;
-    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 50;
+    padding: 1.5rem 0 1.5rem;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .services-horizontal .services-header {
     text-align: center;
-    padding: 0 1.5rem 1.5rem;
+    padding: 0 1.5rem 1rem;
+    flex-shrink: 0;
 }
 
-.services-scroll-hint {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
-    opacity: 0.8;
-}
-
+/* No horizontal scroll - vertical scroll drives horizontal via transform */
 .services-scroll-wrapper {
     flex: 1;
-    overflow-x: auto;
-    overflow-y: visible;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-}
-
-.services-scroll-wrapper::-webkit-scrollbar {
-    display: none;
+    overflow: hidden;
+    min-height: 0;
+    touch-action: pan-y;
 }
 
 .services-track {
@@ -605,14 +606,15 @@ a:hover {
     gap: 2rem;
     padding: 1rem 1.5rem 2rem;
     width: max-content;
-    min-height: 420px;
+    min-height: 0;
+    will-change: transform;
+    align-items: stretch;
 }
 
 .services-horizontal .service-card {
     flex: 0 0 min(380px, calc(100vw - 4rem));
     width: min(380px, calc(100vw - 4rem));
     max-width: 380px;
-    scroll-snap-align: start;
 }
 
 .services-grid {
@@ -640,6 +642,11 @@ a:hover {
     position: relative;
     height: 200px;
     overflow: hidden;
+}
+
+/* Horizontal scroll cards: smaller image so full text fits in viewport */
+.services-horizontal .service-image {
+    height: 160px;
 }
 
 .service-image img {
@@ -701,52 +708,167 @@ a:hover {
 }
 
 /* ============================================
-   Why Us Section
+   Why Us Section - Horizontal carousel
    ============================================ */
 
 .why-us {
     padding: var(--section-padding);
-    background: var(--bg-alt);
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+    margin-top: 4rem;
 }
 
-.why-us-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+.why-us-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
 }
 
-.why-us-item {
+.why-us-tagline {
+    font-size: 1.125rem;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.why-us-carousel-wrapper {
     display: flex;
-    align-items: flex-start;
-    gap: 1.25rem;
-    padding: 1.5rem;
-    background: white;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    transition: all var(--transition-base);
+    align-items: center;
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.why-us-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-}
-
-.why-us-icon {
+.why-us-carousel-btn {
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-    color: white;
-    border-radius: 12px;
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
 }
 
-.why-us-item p {
+.why-us-carousel-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+.why-us-carousel {
+    flex: 1;
+    overflow: hidden;
+    scroll-behavior: smooth;
+}
+
+.why-us-carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.5rem 0;
+}
+
+.why-us-carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.why-us-card {
+    flex: 0 0 min(340px, calc(100vw - 6rem));
+    scroll-snap-align: center;
+    padding: 1.75rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.why-us-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.why-us-card--featured,
+.why-us-card--accent {
+    /* All cards white - no colored backgrounds */
+}
+
+.why-us-card--stat {
+    text-align: center;
+}
+
+.why-us-stat {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.why-us-card-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+}
+
+
+.why-us-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
     color: var(--text);
+}
+
+.why-us-card p {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
     margin: 0;
-    font-weight: 500;
+    line-height: 1.6;
+}
+
+.why-us-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.why-us-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all var(--transition-fast);
+}
+
+.why-us-dot:hover {
+    background: var(--primary-light);
+}
+
+.why-us-dot.active {
+    background: var(--primary);
+    transform: scale(1.2);
 }
 
 /* ============================================
@@ -826,6 +948,7 @@ a:hover {
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     position: relative;
     overflow: hidden;
+    z-index: 1;
 }
 
 .stats::before {
@@ -1255,7 +1378,8 @@ a:hover {
 
 .about-content,
 .contact-section,
-.pricing-section {
+.pricing-section,
+.services-page-content {
     padding: var(--section-padding);
 }
 
@@ -1274,6 +1398,138 @@ a:hover {
 .about-intro p {
     margin-bottom: 1rem;
     color: var(--text-muted);
+}
+
+/* About page - Our Services blocks (ustaxfiler clone) */
+.about-our-services {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+}
+
+.about-services-intro {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.about-services-blocks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.about-service-block {
+    display: block;
+    padding: 1.75rem;
+    background: white;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    text-decoration: none;
+    transition: all var(--transition-base);
+}
+
+.about-service-block:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.about-service-block h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.about-service-block p {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.about-cta {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+/* Services page - clone of ustaxfiler structure */
+.services-nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.services-nav-links a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--primary);
+    background: white;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.services-nav-links a:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.services-section {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+}
+
+.services-section .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+
+.services-section p {
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+.services-section a {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+.services-section a:hover {
+    color: var(--primary-dark);
+}
+
+.services-list {
+    margin: 1rem 0 1.5rem 1.5rem;
+    padding: 0;
+    list-style: disc;
+}
+
+.services-list li {
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.services-subtitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem;
+    color: var(--text);
+}
+
+.services-cta {
+    text-align: center;
+    margin-top: 3rem;
 }
 
 .contact-grid {
@@ -1326,6 +1582,40 @@ a:hover {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary);
+}
+
+.form-success {
+    text-align: center;
+    padding: 2.5rem;
+    background: var(--bg-alt);
+    border-radius: 16px;
+    border: 2px solid var(--accent);
+}
+
+.form-success-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-radius: 50%;
+}
+
+.form-success h3 {
+    font-size: 1.35rem;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+}
+
+.form-success p {
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
 }
 
 .pricing-table-wrapper {
@@ -1526,8 +1816,17 @@ a:hover {
         text-align: center;
     }
     
-    .why-us-grid {
-        grid-template-columns: 1fr;
+    .why-us-carousel-wrapper {
+        gap: 0.5rem;
+    }
+    
+    .why-us-carousel-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .why-us-card {
+        flex: 0 0 min(300px, calc(100vw - 4rem));
     }
     
     .resources-grid {
@@ -1593,6 +1892,7 @@ a:hover {
     .contact-section,
     .pricing-section,
     .resources-page,
+    .services-page-content,
     .page-hero {
         padding: 3rem 0;
     }
@@ -1754,10 +2054,10 @@ a:hover {
 }
 
 .floating-contact-btn {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    min-height: 32px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;

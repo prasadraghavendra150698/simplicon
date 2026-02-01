@@ -1,5 +1,6 @@
 /**
- * Contact Form Handler - TypeScript
+ * Contact Form Handler - Submits to Netlify Function
+ * Admin receives form copy | User receives acknowledgement
  */
 
 interface FormData {
@@ -10,13 +11,21 @@ interface FormData {
   message: string;
 }
 
+function getSubmitUrl(): string {
+  // Vercel: /api/submit-contact
+  // Netlify: /.netlify/functions/submit-contact
+  if (typeof window === 'undefined') return '';
+  const base = window.location.origin;
+  return `${base}/api/submit-contact`;
+}
+
 export function initContactForm(): void {
   const form = document.getElementById('contactForm') as HTMLFormElement | null;
   const formSuccess = document.getElementById('formSuccess') as HTMLDivElement | null;
 
   if (!form || !formSuccess) return;
 
-  form.addEventListener('submit', (e: Event) => {
+  form.addEventListener('submit', async (e: Event) => {
     e.preventDefault();
 
     const name = (form.querySelector('#name') as HTMLInputElement)?.value?.trim();
@@ -24,21 +33,61 @@ export function initContactForm(): void {
     const message = (form.querySelector('#message') as HTMLTextAreaElement)?.value?.trim();
 
     if (!name || !email || !message) {
-      alert('Please fill in all required fields.');
+      alert('Please fill in all required fields (Name, Email, Message).');
       return;
     }
 
     const formData: FormData = {
-      name: name,
-      email: email,
-      phone: (form.querySelector('#phone') as HTMLInputElement)?.value || '',
-      subject: (form.querySelector('#subject') as HTMLSelectElement)?.value || '',
-      message: message,
+      name,
+      email,
+      phone: (form.querySelector('#phone') as HTMLInputElement)?.value?.trim() || '',
+      subject: (form.querySelector('#subject') as HTMLSelectElement)?.value || 'general',
+      message,
     };
 
-    form.style.display = 'none';
-    formSuccess.style.display = 'block';
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const originalText = submitBtn?.textContent || 'Send Message';
 
-    console.log('Form submitted:', formData);
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+    }
+
+    try {
+      const url = getSubmitUrl();
+      if (!url || (url.includes('localhost') && !url.includes('3000'))) {
+        // Local Vite dev - API not available, show success for testing. Run "vercel dev" for full form testing.
+        form.style.display = 'none';
+        formSuccess.style.display = 'block';
+        return;
+      }
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          throw new Error('Form service not available. Please run "vercel dev" for local testing, or deploy to Vercel.');
+        }
+        throw new Error(data.error || `Request failed (${res.status})`);
+      }
+
+      form.reset();
+      form.style.display = 'none';
+      formSuccess.style.display = 'block';
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Something went wrong. Please try again or email us directly.';
+      alert(msg);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    }
   });
 }

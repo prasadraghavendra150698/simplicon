@@ -12,6 +12,7 @@ export default defineConfig({
         contact: 'contact.html',
         pricing: 'pricing.html',
         resources: 'resources.html',
+        services: 'services.html',
       },
     },
   },

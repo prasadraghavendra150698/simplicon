@@ -32,6 +32,29 @@ Your site is built and ready to deploy. Choose one of these free hosting options
 4. Branch: `main`, folder: `/ (root)` - but you need to deploy the `dist` folder
 5. Use GitHub Actions or set the build output to `dist`
 
+## Contact Form Setup (Netlify)
+
+The contact form uses a Netlify Function + Resend for professional emails:
+- **Admin** receives a copy of each submission (with logo, branded HTML)
+- **User** receives an acknowledgement email (with logo, branded HTML)
+
+### Setup Steps
+
+1. **Get Resend API key** (free at [resend.com](https://resend.com))
+2. In **Netlify Dashboard** → Site → **Environment variables**:
+   - `RESEND_API_KEY` = your Resend API key (required)
+   - `ADMIN_EMAIL` = where form submissions go (default: info@simplicontax.com)
+3. **Deploy via Git or Netlify CLI** (not Drop) so functions are included
+4. For custom "from" email: verify your domain in Resend, then set `FROM_EMAIL`
+
+### Local Form Testing
+
+```bash
+# Install Netlify CLI: npm i -g netlify-cli
+netlify dev
+```
+Then open http://localhost:8888 and test the contact form. Add `RESEND_API_KEY` to `.env` for local testing.
+
 ## Local Preview
 
 To preview the built site locally:
