@@ -3,7 +3,7 @@
  * Uses form submit event with preventDefault - no page reload
  */
 
-const FETCH_TIMEOUT_MS = 15000;
+const FETCH_TIMEOUT_MS = 10000;
 
 interface FormPayload {
   name: string;
@@ -13,10 +13,10 @@ interface FormPayload {
   message: string;
 }
 
-function fetchWithTimeout(url: string, options: RequestInit, timeoutMs: number): Promise<Response> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timeoutId));
+function sleep(ms: number): Promise<never> {
+  return new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('Request timed out')), ms)
+  );
 }
 
 export function initContactForm(): void {
@@ -49,8 +49,19 @@ export function initContactForm(): void {
       submitBtn.textContent = 'Sending...';
     }
 
+    const resetButton = (): void => {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    };
+
     try {
-      const isLocalDev = typeof window !== 'undefined' && window.location.hostname === 'localhost' && window.location.port !== '3000';
+      const isLocalDev =
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+        window.location.port !== '3000';
+
       if (isLocalDev) {
         console.log('Local dev: API not available, simulating success');
         form.reset();
@@ -59,10 +70,11 @@ export function initContactForm(): void {
         return;
       }
 
-      console.log('FETCH STARTED');
-      const res = await fetchWithTimeout(
-        '/api/submit-contact',
-        {
+      const url = `${window.location.origin}/api/submit-contact`;
+      console.log('FETCH STARTED', url);
+
+      const fetchPromise = (async (): Promise<void> => {
+        const res = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -72,39 +84,36 @@ export function initContactForm(): void {
             phone: (form.querySelector('#phone') as HTMLInputElement)?.value?.trim() || undefined,
             subject: (form.querySelector('#subject') as HTMLSelectElement)?.value || undefined,
           } as FormPayload),
-        },
-        FETCH_TIMEOUT_MS
-      );
+        });
 
-      console.log('FETCH COMPLETE', res.status);
-      const data = await res.json().catch(() => ({}));
+        console.log('FETCH COMPLETE', res.status);
+        const data = await res.json().catch(() => ({}));
 
-      if (!res.ok) {
-        const msg = data.error ?? `Request failed (${res.status})`;
-        throw new Error(msg);
-      }
-
-      form.reset();
-      form.style.display = 'none';
-      formSuccess.style.display = 'block';
-    } catch (err) {
-      if (err instanceof Error) {
-        if (err.name === 'AbortError') {
-          console.error('FETCH TIMEOUT');
-          alert('Request timed out. Please try again or email us directly at info@simplicontaxadvisors.com');
-        } else {
-          console.error('FETCH ERROR', err.message);
-          alert(err.message);
+        if (!res.ok) {
+          const msg = data.error ?? `Request failed (${res.status})`;
+          throw new Error(msg);
         }
+
+        form.reset();
+        form.style.display = 'none';
+        formSuccess.style.display = 'block';
+      })();
+
+      await Promise.race([fetchPromise, sleep(FETCH_TIMEOUT_MS)]);
+    } catch (err) {
+      const isTimeout = err instanceof Error && err.message === 'Request timed out';
+      if (isTimeout) {
+        console.error('FETCH TIMEOUT');
+        alert('Request timed out. Please try again or email us directly at info@simplicontaxadvisors.com');
+      } else if (err instanceof Error) {
+        console.error('FETCH ERROR', err.message);
+        alert(err.message);
       } else {
         console.error('FETCH ERROR', err);
         alert('Something went wrong. Please try again or email us directly at info@simplicontaxadvisors.com');
       }
     } finally {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      }
+      resetButton();
     }
   });
 }
