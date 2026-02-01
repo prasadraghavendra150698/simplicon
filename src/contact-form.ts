@@ -19,6 +19,33 @@ function sleep(ms: number): Promise<never> {
   );
 }
 
+function showToast(message: string, isError = true): void {
+  const existing = document.querySelector('.form-toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'form-toast' + (isError ? ' form-toast--error' : '');
+  toast.setAttribute('role', 'alert');
+
+  const msg = document.createElement('span');
+  msg.className = 'form-toast-message';
+  msg.textContent = message;
+  toast.appendChild(msg);
+
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'form-toast-close';
+  closeBtn.setAttribute('aria-label', 'Close');
+  closeBtn.textContent = '×';
+  toast.appendChild(closeBtn);
+
+  const close = (): void => toast.remove();
+  closeBtn.addEventListener('click', close);
+  setTimeout(close, 6000);
+
+  document.body.appendChild(toast);
+}
+
 export function initContactForm(): void {
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const formSuccess = document.getElementById('formSuccess') as HTMLDivElement | null;
@@ -37,7 +64,7 @@ export function initContactForm(): void {
     const message = (form.querySelector('#message') as HTMLTextAreaElement)?.value?.trim();
 
     if (!name || !email || !message) {
-      alert('Please fill in all required fields (Name, Email, Message).');
+      showToast('Please fill in Name, Email, and Message.');
       return;
     }
 
@@ -106,13 +133,13 @@ export function initContactForm(): void {
         console.error('[CONTACT FORM] TIMEOUT after', FETCH_TIMEOUT_MS / 1000, 'seconds');
         console.error('[CONTACT FORM] DIAGNOSTIC: 1) Open Vercel Dashboard → Project → Logs. 2) Submit form again. 3) Do you see "[CONTACT API] 1. REQUEST RECEIVED"? If NO → API route not hit (check Vercel deployment). If YES → Which step number is last? Step 6 = SMTP verify hanging. Step 8 = sendMail hanging.');
         console.error('[CONTACT FORM] 4) Open DevTools → Network tab. Filter by "submit-contact". Is request "pending" or completed? What status?');
-        alert('Request timed out. Open browser Console (F12) for diagnostic steps. Or email us at info@simplicontaxadvisors.com');
+        showToast('Request timed out. Please try again or email us directly.');
       } else if (err instanceof Error) {
         console.error('[CONTACT FORM] ERROR:', err.message);
-        alert(err.message);
+        showToast(err.message);
       } else {
         console.error('[CONTACT FORM] ERROR:', err);
-        alert('Something went wrong. Please try again or email us directly at info@simplicontaxadvisors.com');
+        showToast('Something went wrong. Please try again or email us directly.');
       }
     } finally {
       resetButton();
