@@ -51,6 +51,7 @@ export function initContactForm(): void {
   const formSuccess = document.getElementById('formSuccess') as HTMLDivElement | null;
 
   if (!form || !formSuccess) return;
+  if (form.getAttribute('data-handled') === 'inline') return;
 
   console.log('CONTACT FORM JS LOADED');
 

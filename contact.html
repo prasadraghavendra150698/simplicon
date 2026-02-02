@@ -68,6 +68,7 @@
     </section>
 
     <!-- Contact Section -->
+    <!-- VERSION: 999 -->
     <section class="contact-section">
         <div class="container">
             <div class="contact-grid">
@@ -99,7 +100,7 @@
                 
                 <div class="contact-form-wrapper">
                     <h2>Get in Touch</h2>
-                    <form class="contact-form" id="contact-form">
+                    <form class="contact-form" id="contact-form" onsubmit="return false;" data-handled="inline">
                         <div class="form-group">
                             <label for="name">Full Name *</label>
                             <input type="text" id="name" name="name" required placeholder="Enter your name">
@@ -127,7 +128,7 @@
                             <label for="message">Message *</label>
                             <textarea id="message" name="message" rows="5" required placeholder="How can we help you?"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-full" id="contact-submit-btn">
+                        <button type="button" class="btn btn-primary btn-full" id="submitBtn">
                             <span class="btn-text">Send Message</span>
                             <span class="btn-spinner" aria-hidden="true"></span>
                         </button>
@@ -141,6 +142,92 @@
             </div>
         </div>
     </section>
+
+    <script>
+      (function() {
+        console.log("INLINE SCRIPT LOADED");
+        var form = document.getElementById("contact-form");
+        var formSuccess = document.getElementById("formSuccess");
+        var btn = document.getElementById("submitBtn");
+        var btnText = btn ? btn.querySelector(".btn-text") : null;
+
+        function showToast(msg, isError) {
+          var existing = document.querySelector(".form-toast");
+          if (existing) existing.remove();
+          var toast = document.createElement("div");
+          toast.className = "form-toast" + (isError ? " form-toast--error" : "");
+          toast.setAttribute("role", "alert");
+          var span = document.createElement("span");
+          span.className = "form-toast-message";
+          span.textContent = msg;
+          toast.appendChild(span);
+          var closeBtn = document.createElement("button");
+          closeBtn.type = "button";
+          closeBtn.className = "form-toast-close";
+          closeBtn.setAttribute("aria-label", "Close");
+          closeBtn.textContent = "\u00D7";
+          closeBtn.onclick = function() { toast.remove(); };
+          toast.appendChild(closeBtn);
+          document.body.appendChild(toast);
+          setTimeout(function() { toast.remove(); }, 6000);
+        }
+
+        function resetBtn() {
+          if (btn) { btn.disabled = false; btn.classList.remove("btn-loading"); }
+          if (btnText) btnText.textContent = "Send Message";
+        }
+
+        function handleSubmit() {
+          console.log("BUTTON CLICKED");
+          var name = (form.querySelector("#name") || {}).value || "";
+          var email = (form.querySelector("#email") || {}).value || "";
+          var phone = (form.querySelector("#phone") || {}).value || "";
+          var inquiry_type = (form.querySelector("#inquiry_type") || {}).value || "";
+          var message = (form.querySelector("#message") || {}).value || "";
+          name = name.trim(); email = email.trim(); message = message.trim(); inquiry_type = inquiry_type.trim(); phone = phone.trim();
+
+          if (!name || !email || !message) {
+            showToast("Please fill in Name, Email, and Message.", true);
+            return;
+          }
+          if (!inquiry_type) {
+            showToast("Please select an Inquiry Type.", true);
+            return;
+          }
+
+          if (btn) { btn.disabled = true; btn.classList.add("btn-loading"); }
+          if (btnText) btnText.textContent = "Sending...";
+
+          var url = window.location.origin + "/api/submit-contact";
+          var body = JSON.stringify({ name: name, email: email, phone: phone || undefined, inquiry_type: inquiry_type, message: message });
+
+          fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: body
+          }).then(function(res) {
+            return res.json().then(function(data) {
+              if (!res.ok) {
+                throw new Error((data && data.message) || (data && data.error) || "Request failed");
+              }
+              if (data && data.success === false && data.message) {
+                throw new Error(data.message);
+              }
+              form.reset();
+              form.style.display = "none";
+              formSuccess.style.display = "block";
+              formSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
+            });
+          }).catch(function(err) {
+            console.error("CONTACT FORM ERROR:", err);
+            showToast(err && err.message ? err.message : "Something went wrong. Please try again.", true);
+          }).finally(resetBtn);
+        }
+
+        if (btn) btn.addEventListener("click", handleSubmit);
+        if (form) form.addEventListener("submit", function(e) { e.preventDefault(); e.stopPropagation(); handleSubmit(); });
+      })();
+    </script>
 
     <!-- Footer -->
     <footer class="footer">
