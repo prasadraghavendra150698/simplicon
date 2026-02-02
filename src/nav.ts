@@ -1,7 +1,3 @@
-/**
- * Mobile Navigation - TypeScript
- */
-
 export function initMobileNav(): void {
   const navToggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
   const navMenu = document.querySelector<HTMLUListElement>('.nav-menu');

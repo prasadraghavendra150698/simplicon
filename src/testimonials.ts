@@ -1,7 +1,3 @@
-/**
- * Testimonials Slider - TypeScript
- */
-
 export function initTestimonials(): void {
   const slider = document.querySelector<HTMLDivElement>('.testimonials-slider');
   const dotsContainer = document.getElementById('testimonialDots');

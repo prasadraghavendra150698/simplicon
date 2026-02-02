@@ -1,11 +1,4 @@
-/**
- * E-Filing Season Popup - Date-aware announcement
- * Shows different messages based on IRS e-filing season dates
- */
-
-// Show popup every time home page is loaded (no storage/dismiss persistence)
-
-// IRS E-Filing season dates (adjust yearly if needed)
+// IRS e-filing season dates (adjust yearly)
 function getSeasonDates(year: number) {
   return {
     openDate: new Date(year, 0, 26),      // Jan 26

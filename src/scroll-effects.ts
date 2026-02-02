@@ -1,7 +1,3 @@
-/**
- * Scroll Effects - TypeScript
- */
-
 export function initScrollEffects(): void {
   const header = document.querySelector<HTMLElement>('.header');
   if (!header) return;

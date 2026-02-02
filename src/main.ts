@@ -1,8 +1,3 @@
-/**
- * Simplicon Tax - Interactive Features
- * TypeScript for type-safe UI interactions
- */
-
 import { initMobileNav } from './nav';
 import { initTestimonials } from './testimonials';
 import { initContactForm } from './contact-form';

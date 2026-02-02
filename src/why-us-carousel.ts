@@ -1,8 +1,3 @@
-/**
- * Why Us Carousel - Horizontal scrolling, one card at a time
- * Auto-advances, prev/next buttons, dots indicator
- */
-
 const INTERVAL_MS = 2500;
 
 export function initWhyUsCarousel(): void {

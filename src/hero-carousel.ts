@@ -1,8 +1,3 @@
-/**
- * Hero Carousel - Cinematic Ken Burns style
- * Auto-advancing with subtle zoom & pan, no visible controls
- */
-
 const HERO_IMAGES = [
   { src: 'https://images.unsplash.com/photo-1762151662378-f40e20901824?w=1200&q=85', alt: 'Tax preparation - Glasses and pen on tax form and laptop', title: 'Expert Tax Preparation' },
   { src: 'https://images.unsplash.com/photo-1709880945165-d2208c6ad2ec?w=1200&q=85', alt: 'Tax calculations - Calculator and laptop for accurate filing', title: 'Accurate Tax Calculations' },

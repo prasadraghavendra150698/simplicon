@@ -1,8 +1,4 @@
-/**
- * Contact Form Handler - Submits to /api/submit-contact
- * Flow: User submits → JS collects data → POST to API → Success: modal + reset + scroll | Error: toast
- */
-
+// contact form - posts to /api/submit-contact
 const FETCH_TIMEOUT_MS = 25000;
 
 interface FormPayload {
@@ -53,8 +49,6 @@ export function initContactForm(): void {
   if (!form || !formSuccess) return;
   if (form.getAttribute('data-handled') === 'inline') return;
 
-  console.log('CONTACT FORM JS LOADED');
-
   form.addEventListener('submit', async (e: SubmitEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -98,7 +92,6 @@ export function initContactForm(): void {
           window.location.hostname === '127.0.0.1');
 
       if (isLocalDev) {
-        console.log('Local dev detected (Simulating success)');
         await new Promise(resolve => setTimeout(resolve, 1500));
         form.reset();
         form.style.display = 'none';
@@ -107,7 +100,6 @@ export function initContactForm(): void {
       }
 
       const url = `${window.location.origin}/api/submit-contact`;
-      console.log('[CONTACT FORM] FETCH STARTED', url);
 
       const fetchPromise = (async (): Promise<void> => {
         const res = await fetch(url, {
@@ -122,14 +114,10 @@ export function initContactForm(): void {
           } as FormPayload),
         });
 
-        console.log('[CONTACT FORM] FETCH STATUS', res.status);
-
         let data: any = {};
         try {
           data = await res.json();
-        } catch (e) {
-          console.warn('[CONTACT FORM] Could not parse response as JSON');
-        }
+        } catch (_) {}
 
         if (!res.ok) {
           const msg = data.message || data.error || `Server error (${res.status})`;
@@ -152,10 +140,8 @@ export function initContactForm(): void {
       const isTimeout = msg === 'Request timed out';
 
       if (isTimeout) {
-        console.error('[CONTACT FORM] TIMEOUT after', FETCH_TIMEOUT_MS / 1000, 'seconds');
         showToast('Request timed out. Please check your internet or try again later.');
       } else {
-        console.error('[CONTACT FORM] ERROR:', msg);
         showToast(msg);
       }
     } finally {

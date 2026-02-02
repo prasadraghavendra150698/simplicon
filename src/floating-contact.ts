@@ -1,8 +1,4 @@
-/**
- * Floating Contact Icons - Show after services, hide while scrolling
- * Only on homepage (index.html)
- */
-
+// floating contact - shows after scrolling past services
 const SCROLL_DEBOUNCE_MS = 200;
 const SERVICES_SECTION_ID = 'services';
 
@@ -16,15 +12,13 @@ export function initFloatingContact() {
   const ss = servicesSection;
   let scrollTimeout: number | null = null;
 
-  // Initially hidden - only show after passing services
   fc.classList.add('floating-contact--hidden');
-  fc.classList.add('floating-contact--scrolling'); // Start as "scrolling"
+  fc.classList.add('floating-contact--scrolling');
 
   function updateVisibility() {
     const servicesRect = ss.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
 
-    // Show only when user has scrolled past the services section (bottom of services above viewport)
     const hasPassedServices = servicesRect.bottom < viewportHeight * 0.3;
 
     if (hasPassedServices) {
@@ -35,7 +29,6 @@ export function initFloatingContact() {
   }
 
   function onScroll() {
-    // Hide while scrolling
     fc.classList.add('floating-contact--scrolling');
 
     if (scrollTimeout) clearTimeout(scrollTimeout);
@@ -47,7 +40,6 @@ export function initFloatingContact() {
     updateVisibility();
   }
 
-  // Throttled scroll handler for performance
   let ticking = false;
   function onScrollThrottled() {
     if (!ticking) {
@@ -61,7 +53,5 @@ export function initFloatingContact() {
 
   window.addEventListener('scroll', onScrollThrottled, { passive: true });
   window.addEventListener('resize', updateVisibility);
-
-  // Initial check
   updateVisibility();
 }

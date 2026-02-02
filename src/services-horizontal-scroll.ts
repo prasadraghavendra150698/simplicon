@@ -1,16 +1,3 @@
-/**
- * Services Horizontal Scroll - Scroll-driven horizontal page
- *
- * No horizontal scroll at all. Vertical scroll is the only input.
- * As the user scrolls down through the sticky section, cards move left-to-right
- * via transform - like turning pages of a horizontal book.
- *
- * - position: sticky keeps section in view
- * - Scroll position within container maps to translateX on the track
- * - Works on desktop and mobile (native vertical scroll)
- * - No wheel/touch hijacking, no scroll trapping
- */
-
 export function initServicesHorizontalScroll(): void {
   const container = document.getElementById('servicesScrollContainer');
   const wrapper = document.getElementById('servicesScrollWrapper') as HTMLElement | null;
