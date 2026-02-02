@@ -90,7 +90,7 @@ function acknowledgementEmailHtml(name: string, logoUrl: string): string {
     </tr>
     <tr>
       <td style="padding:24px 40px;background:#f8fafc;font-size:12px;color:#64748b;text-align:center;">
-        Simplicon Tax Advisors LLP | Trading as Simplicon Tax | Founded in 2024
+        Simplicon Tax Advisors LLP | Trading as Simplicon Tax | Founded in 2020
       </td>
     </tr>
   </table>

@@ -2,6 +2,21 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": null,
+  "rewrites": [
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/pricing", "destination": "/pricing.html" },
+    { "source": "/resources", "destination": "/resources.html" }
+  ],
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/about.html", "destination": "/about", "permanent": true },
+    { "source": "/contact.html", "destination": "/contact", "permanent": true },
+    { "source": "/services.html", "destination": "/services", "permanent": true },
+    { "source": "/pricing.html", "destination": "/pricing", "permanent": true },
+    { "source": "/resources.html", "destination": "/resources", "permanent": true }
+  ],
   "functions": {
     "api/submit-contact.ts": {
       "maxDuration": 30
