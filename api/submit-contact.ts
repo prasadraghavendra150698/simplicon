@@ -4,47 +4,45 @@ const log = (step: string): void => {
   console.log(`[CONTACT API] ${step}`);
 };
 
-const corsHeaders: Record<string, string> = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Max-Age": "86400",
-};
+export default async function handler(req: any, res: any) {
+  log("1. REQUEST RECEIVED (" + req.method + ")");
 
-function jsonResponse(body: object, status: number): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json", ...corsHeaders },
-  });
-}
+  // CORS Headers
+  const setCors = (response: any) => {
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  };
 
-export default async function handler(request: Request): Promise<Response> {
-  log("1. REQUEST RECEIVED");
+  setCors(res);
 
-  if (request.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: corsHeaders });
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
   }
 
-  if (request.method === "GET") {
-    return jsonResponse({ ok: true, message: "Contact API reachable" }, 200);
+  if (req.method === "GET") {
+    return res.status(200).json({ ok: true, message: "Contact API reachable" });
   }
 
-  if (request.method !== "POST") {
-    return jsonResponse({ error: "Method Not Allowed" }, 405);
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
 
   try {
     log("2. Parsing request body...");
-    const body = await request.json();
+    // In Vercel Node.js, body is already parsed if Content-Type is application/json
+    const body = req.body;
     const { name, email, message, phone, inquiry_type } = body;
 
     if (!name?.trim() || !email?.trim() || !message?.trim()) {
-      return jsonResponse({ success: false, message: "Name, email, and message are required" }, 400);
+      log("3a. Validation failed: missing fields");
+      return res.status(400).json({ success: false, message: "Name, email, and message are required" });
     }
     if (!inquiry_type?.trim()) {
-      return jsonResponse({ success: false, message: "Inquiry type is required" }, 400);
+      log("3b. Validation failed: missing inquiry type");
+      return res.status(400).json({ success: false, message: "Inquiry type is required" });
     }
-    log("3. Body OK");
+    log("4. Body OK: " + name);
 
     const host = process.env.SMTP_HOST;
     const port = process.env.SMTP_PORT;
@@ -54,12 +52,11 @@ export default async function handler(request: Request): Promise<Response> {
     const to = process.env.EMAIL_TO;
 
     if (!host || !port || !user || !pass || !from || !to) {
-      log("ERROR: Missing env vars - host:" + !!host + " port:" + !!port + " user:" + !!user + " pass:" + !!pass + " from:" + !!from + " to:" + !!to);
-      return jsonResponse({ success: false, message: "Email service not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM, EMAIL_TO in Vercel." }, 500);
+      log("ERROR: Missing env vars");
+      return res.status(500).json({ success: false, message: "Email service not configured in Vercel environment variables." });
     }
-    log("4. Env vars OK");
+    log("5. Env vars OK");
 
-    log("5. Creating SMTP transporter...");
     const transporter = nodemailer.createTransport({
       host,
       port: Number(port),
@@ -67,6 +64,7 @@ export default async function handler(request: Request): Promise<Response> {
       auth: { user, pass },
       connectionTimeout: 10000,
       greetingTimeout: 10000,
+      socketTimeout: 15000,
     });
 
     let emailText = message.trim();
@@ -74,7 +72,13 @@ export default async function handler(request: Request): Promise<Response> {
     if (phone?.trim()) emailText += `\nPhone: ${phone.trim()}`;
 
     log("6. Sending email...");
-    await transporter.sendMail({
+
+    // Create a promise that rejects after 15 seconds
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error("SMTP_TIMEOUT")), 15000);
+    });
+
+    const sendMailPromise = transporter.sendMail({
       from,
       to,
       subject: `[${inquiry_type?.trim() || "General"}] New contact from ${name.trim()}`,
@@ -82,19 +86,30 @@ export default async function handler(request: Request): Promise<Response> {
       text: emailText,
     });
 
+    // Race the email sending against the 15s timeout
+    await Promise.race([sendMailPromise, timeoutPromise]);
+
     log("7. DONE - Email sent");
-    return jsonResponse({ success: true, message: "Message sent successfully" }, 200);
-  } catch (err) {
+    return res.status(200).json({ success: true, message: "Message sent successfully" });
+
+  } catch (err: any) {
     const msg = err instanceof Error ? err.message : String(err);
     log("ERROR at step: " + msg);
-    console.error("CONTACT API ERROR:", err);
-    const userMsg = err instanceof Error && msg.includes("ECONNREFUSED")
-      ? "SMTP server unreachable. Check SMTP_HOST and SMTP_PORT."
-      : err instanceof Error && (msg.includes("timeout") || msg.includes("ETIMEDOUT"))
-      ? "SMTP connection timed out. Check SMTP server and firewall."
-      : err instanceof Error && msg.includes("Invalid login")
-      ? "SMTP auth failed. Check SMTP_USER and SMTP_PASS."
-      : "Email send failed: " + msg;
-    return jsonResponse({ success: false, message: userMsg }, 500);
+
+    let userMsg = "Email send failed. please try again later.";
+    let status = 500;
+
+    if (msg === "SMTP_TIMEOUT") {
+      userMsg = "Email service timed out. Check your SMTP settings or provider.";
+    } else if (msg.includes("ECONNREFUSED")) {
+      userMsg = "SMTP server unreachable. Check SMTP_HOST and SMTP_PORT.";
+    } else if (msg.includes("Invalid login")) {
+      userMsg = "SMTP authentication failed. Check SMTP_USER and SMTP_PASS.";
+    } else {
+      userMsg = "Error: " + msg;
+    }
+
+    return res.status(status).json({ success: false, message: userMsg });
   }
 }
+

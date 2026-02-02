@@ -94,11 +94,12 @@ export function initContactForm(): void {
     try {
       const isLocalDev =
         typeof window !== 'undefined' &&
-        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
-        window.location.port !== '3000';
+        (window.location.hostname === 'localhost' ||
+          window.location.hostname === '127.0.0.1');
 
       if (isLocalDev) {
-        console.log('Local dev: API not available, simulating success');
+        console.log('Local dev detected (Simulating success)');
+        await new Promise(resolve => setTimeout(resolve, 1500));
         form.reset();
         form.style.display = 'none';
         formSuccess.style.display = 'block';
@@ -121,15 +122,22 @@ export function initContactForm(): void {
           } as FormPayload),
         });
 
-        const data = await res.json().catch(() => ({}));
+        console.log('[CONTACT FORM] FETCH STATUS', res.status);
+
+        let data: any = {};
+        try {
+          data = await res.json();
+        } catch (e) {
+          console.warn('[CONTACT FORM] Could not parse response as JSON');
+        }
 
         if (!res.ok) {
-          const msg = (data.message ?? data.error) ?? `Request failed (${res.status})`;
+          const msg = data.message || data.error || `Server error (${res.status})`;
           throw new Error(msg);
         }
 
-        if (data.success === false && data.message) {
-          throw new Error(data.message);
+        if (data.success === false) {
+          throw new Error(data.message || 'Submission failed');
         }
 
         form.reset();
@@ -139,19 +147,16 @@ export function initContactForm(): void {
       })();
 
       await Promise.race([fetchPromise, sleep(FETCH_TIMEOUT_MS)]);
-    } catch (err) {
-      const isTimeout = err instanceof Error && err.message === 'Request timed out';
+    } catch (err: any) {
+      const msg = err instanceof Error ? err.message : String(err || 'Unknown error');
+      const isTimeout = msg === 'Request timed out';
+
       if (isTimeout) {
         console.error('[CONTACT FORM] TIMEOUT after', FETCH_TIMEOUT_MS / 1000, 'seconds');
-        console.error('[CONTACT FORM] DIAGNOSTIC: 1) Open Vercel Dashboard → Project → Logs. 2) Submit form again. 3) Do you see "[CONTACT API] 1. REQUEST RECEIVED"? If NO → API route not hit (check Vercel deployment). If YES → Which step number is last? Step 6 = SMTP verify hanging. Step 8 = sendMail hanging.');
-        console.error('[CONTACT FORM] 4) Open DevTools → Network tab. Filter by "submit-contact". Is request "pending" or completed? What status?');
-        showToast('Request timed out. Please try again or email us directly.');
-      } else if (err instanceof Error) {
-        console.error('[CONTACT FORM] ERROR:', err.message);
-        showToast(err.message);
+        showToast('Request timed out. Please check your internet or try again later.');
       } else {
-        console.error('[CONTACT FORM] ERROR:', err);
-        showToast('Something went wrong. Please try again or email us directly.');
+        console.error('[CONTACT FORM] ERROR:', msg);
+        showToast(msg);
       }
     } finally {
       resetButton();
