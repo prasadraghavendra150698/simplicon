@@ -80,7 +80,7 @@ function acknowledgementEmailHtml(name: string, logoUrl: string): string {
           We have received your message and will get back to you within 1-2 business days.
         </p>
         <p style="margin:0 0 24px;font-size:16px;color:#475569;line-height:1.6;">
-          In the meantime, feel free to reach us at <a href="mailto:info@simplicontax.com" style="color:#0c4a6e;text-decoration:none;">info@simplicontax.com</a> or call <a href="tel:+919959778797" style="color:#0c4a6e;text-decoration:none;">+91 99597 78797</a>.
+          In the meantime, feel free to reach us at <a href="mailto:info@simplicontax.com" style="color:#0c4a6e;text-decoration:none;">info@simplicontax.com</a>.
         </p>
         <p style="margin:0;font-size:16px;color:#475569;line-height:1.6;">
           Best regards,<br>
