@@ -36,10 +36,13 @@ export default async function handler(request: Request): Promise<Response> {
   try {
     log("2. Parsing request body...");
     const body = await request.json();
-    const { name, email, message, phone, subject } = body;
+    const { name, email, message, phone, inquiry_type } = body;
 
     if (!name?.trim() || !email?.trim() || !message?.trim()) {
-      return jsonResponse({ error: "Name, email, and message are required" }, 400);
+      return jsonResponse({ success: false, message: "Name, email, and message are required" }, 400);
+    }
+    if (!inquiry_type?.trim()) {
+      return jsonResponse({ success: false, message: "Inquiry type is required" }, 400);
     }
     log("3. Body OK");
 
@@ -52,7 +55,7 @@ export default async function handler(request: Request): Promise<Response> {
 
     if (!host || !port || !user || !pass || !from || !to) {
       log("ERROR: Missing env vars - host:" + !!host + " port:" + !!port + " user:" + !!user + " pass:" + !!pass + " from:" + !!from + " to:" + !!to);
-      return jsonResponse({ error: "Email service not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM, EMAIL_TO in Vercel." }, 500);
+      return jsonResponse({ success: false, message: "Email service not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM, EMAIL_TO in Vercel." }, 500);
     }
     log("4. Env vars OK");
 
@@ -67,20 +70,20 @@ export default async function handler(request: Request): Promise<Response> {
     });
 
     let emailText = message.trim();
-    if (phone?.trim()) emailText += `\n\nPhone: ${phone.trim()}`;
-    if (subject) emailText += `\nSubject: ${subject}`;
+    if (inquiry_type?.trim()) emailText += `\n\nInquiry Type: ${inquiry_type.trim()}`;
+    if (phone?.trim()) emailText += `\nPhone: ${phone.trim()}`;
 
     log("6. Sending email...");
     await transporter.sendMail({
       from,
       to,
-      subject: `New contact from ${name.trim()}`,
+      subject: `[${inquiry_type?.trim() || "General"}] New contact from ${name.trim()}`,
       replyTo: email.trim(),
       text: emailText,
     });
 
     log("7. DONE - Email sent");
-    return jsonResponse({ success: true }, 200);
+    return jsonResponse({ success: true, message: "Message sent successfully" }, 200);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     log("ERROR at step: " + msg);
@@ -92,6 +95,6 @@ export default async function handler(request: Request): Promise<Response> {
       : err instanceof Error && msg.includes("Invalid login")
       ? "SMTP auth failed. Check SMTP_USER and SMTP_PASS."
       : "Email send failed: " + msg;
-    return jsonResponse({ error: userMsg }, 500);
+    return jsonResponse({ success: false, message: userMsg }, 500);
   }
 }

@@ -303,6 +303,41 @@ a:hover {
     width: 100%;
 }
 
+/* Submit button loading state */
+.btn[type="submit"] {
+    position: relative;
+}
+
+.btn-loading .btn-text {
+    visibility: hidden;
+}
+
+.btn-spinner {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-loading .btn-spinner {
+    display: flex;
+}
+
+.btn-spinner::after {
+    content: "";
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: btnSpinner 0.7s linear infinite;
+}
+
+@keyframes btnSpinner {
+    to { transform: rotate(360deg); }
+}
+
 /* ============================================
    Hero Section - Split layout: text left, carousel right
    ============================================ */

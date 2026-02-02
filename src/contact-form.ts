@@ -1,6 +1,6 @@
 /**
  * Contact Form Handler - Submits to /api/submit-contact
- * Uses form submit event with preventDefault - no page reload
+ * Flow: User submits → JS collects data → POST to API → Success: modal + reset + scroll | Error: toast
  */
 
 const FETCH_TIMEOUT_MS = 25000;
@@ -9,7 +9,7 @@ interface FormPayload {
   name: string;
   email: string;
   phone?: string;
-  subject?: string;
+  inquiry_type: string;
   message: string;
 }
 
@@ -57,29 +57,36 @@ export function initContactForm(): void {
   form.addEventListener('submit', async (e: SubmitEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('SUBMIT HANDLER FIRED');
 
     const name = (form.querySelector('#name') as HTMLInputElement)?.value?.trim();
     const email = (form.querySelector('#email') as HTMLInputElement)?.value?.trim();
+    const phone = (form.querySelector('#phone') as HTMLInputElement)?.value?.trim();
+    const inquiry_type = (form.querySelector('#inquiry_type') as HTMLSelectElement)?.value?.trim();
     const message = (form.querySelector('#message') as HTMLTextAreaElement)?.value?.trim();
 
     if (!name || !email || !message) {
       showToast('Please fill in Name, Email, and Message.');
       return;
     }
+    if (!inquiry_type) {
+      showToast('Please select an Inquiry Type.');
+      return;
+    }
 
     const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-    const originalText = submitBtn?.textContent ?? 'Send Message';
+    const btnText = submitBtn?.querySelector('.btn-text');
 
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
+      submitBtn.classList.add('btn-loading');
+      if (btnText) btnText.textContent = 'Sending...';
     }
 
     const resetButton = (): void => {
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+        submitBtn.classList.remove('btn-loading');
+        if (btnText) btnText.textContent = 'Send Message';
       }
     };
 
@@ -107,23 +114,27 @@ export function initContactForm(): void {
           body: JSON.stringify({
             name,
             email,
+            phone: phone || undefined,
+            inquiry_type,
             message,
-            phone: (form.querySelector('#phone') as HTMLInputElement)?.value?.trim() || undefined,
-            subject: (form.querySelector('#subject') as HTMLSelectElement)?.value || undefined,
           } as FormPayload),
         });
 
-        console.log('FETCH COMPLETE', res.status);
         const data = await res.json().catch(() => ({}));
 
         if (!res.ok) {
-          const msg = data.error ?? `Request failed (${res.status})`;
+          const msg = (data.message ?? data.error) ?? `Request failed (${res.status})`;
           throw new Error(msg);
+        }
+
+        if (data.success === false && data.message) {
+          throw new Error(data.message);
         }
 
         form.reset();
         form.style.display = 'none';
         formSuccess.style.display = 'block';
+        formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
       })();
 
       await Promise.race([fetchPromise, sleep(FETCH_TIMEOUT_MS)]);
