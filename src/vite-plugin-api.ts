@@ -1,6 +1,6 @@
 
 import { Plugin } from 'vite';
-import type { IncomingMessage, ServerResponse } from 'http';
+import type { IncomingMessage } from 'http';
 import handler from '../api/notify';
 
 // Simple body parser middleware for dev server

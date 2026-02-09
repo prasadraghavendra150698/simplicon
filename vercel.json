@@ -3,27 +3,121 @@
   "outputDirectory": "dist",
   "framework": null,
   "rewrites": [
-    { "source": "/about", "destination": "/about.html" },
-    { "source": "/contact", "destination": "/contact.html" },
-    { "source": "/services", "destination": "/services.html" },
-    { "source": "/pricing", "destination": "/pricing.html" },
-    { "source": "/resources", "destination": "/resources.html" },
-    { "source": "/auth", "destination": "/auth.html" },
-    { "source": "/portal", "destination": "/portal.html" },
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/admin-requests", "destination": "/admin-requests.html" }
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/services",
+      "destination": "/services.html"
+    },
+    {
+      "source": "/pricing",
+      "destination": "/pricing.html"
+    },
+    {
+      "source": "/resources",
+      "destination": "/resources.html"
+    },
+    {
+      "source": "/auth",
+      "destination": "/auth.html"
+    },
+    {
+      "source": "/portal",
+      "destination": "/portal.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/admin-requests",
+      "destination": "/admin-requests.html"
+    },
+    {
+      "source": "/admin-ticket",
+      "destination": "/admin-ticket.html"
+    },
+    {
+      "source": "/admin-access",
+      "destination": "/admin-access.html"
+    },
+    {
+      "source": "/admin-members",
+      "destination": "/admin-members.html"
+    }
   ],
   "redirects": [
-    { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/about.html", "destination": "/about", "permanent": true },
-    { "source": "/contact.html", "destination": "/contact", "permanent": true },
-    { "source": "/services.html", "destination": "/services", "permanent": true },
-    { "source": "/pricing.html", "destination": "/pricing", "permanent": true },
-    { "source": "/resources.html", "destination": "/resources", "permanent": true },
-    { "source": "/auth.html", "destination": "/auth", "permanent": true },
-    { "source": "/portal.html", "destination": "/portal", "permanent": true },
-    { "source": "/admin.html", "destination": "/admin", "permanent": true },
-    { "source": "/admin-requests.html", "destination": "/admin-requests", "permanent": true }
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/services.html",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/pricing.html",
+      "destination": "/pricing",
+      "permanent": true
+    },
+    {
+      "source": "/resources.html",
+      "destination": "/resources",
+      "permanent": true
+    },
+    {
+      "source": "/auth.html",
+      "destination": "/auth",
+      "permanent": true
+    },
+    {
+      "source": "/portal.html",
+      "destination": "/portal",
+      "permanent": true
+    },
+    {
+      "source": "/admin.html",
+      "destination": "/admin",
+      "permanent": true
+    },
+    {
+      "source": "/admin-requests.html",
+      "destination": "/admin-requests",
+      "permanent": true
+    },
+    {
+      "source": "/admin-ticket.html",
+      "destination": "/admin-ticket",
+      "permanent": true
+    },
+    {
+      "source": "/admin-access.html",
+      "destination": "/admin-access",
+      "permanent": true
+    },
+    {
+      "source": "/admin-members.html",
+      "destination": "/admin-members",
+      "permanent": true
+    }
   ],
   "functions": {
     "api/submit-contact.ts": {
