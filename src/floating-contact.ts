@@ -1,4 +1,4 @@
-// floating contact - shows after scrolling past services
+// Floating contact behavior - visibility toggles on scroll conditions
 const SCROLL_DEBOUNCE_MS = 200;
 const SERVICES_SECTION_ID = 'services';
 

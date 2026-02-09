@@ -7,7 +7,11 @@
     { "source": "/contact", "destination": "/contact.html" },
     { "source": "/services", "destination": "/services.html" },
     { "source": "/pricing", "destination": "/pricing.html" },
-    { "source": "/resources", "destination": "/resources.html" }
+    { "source": "/resources", "destination": "/resources.html" },
+    { "source": "/auth", "destination": "/auth.html" },
+    { "source": "/portal", "destination": "/portal.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/admin-requests", "destination": "/admin-requests.html" }
   ],
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
@@ -15,7 +19,11 @@
     { "source": "/contact.html", "destination": "/contact", "permanent": true },
     { "source": "/services.html", "destination": "/services", "permanent": true },
     { "source": "/pricing.html", "destination": "/pricing", "permanent": true },
-    { "source": "/resources.html", "destination": "/resources", "permanent": true }
+    { "source": "/resources.html", "destination": "/resources", "permanent": true },
+    { "source": "/auth.html", "destination": "/auth", "permanent": true },
+    { "source": "/portal.html", "destination": "/portal", "permanent": true },
+    { "source": "/admin.html", "destination": "/admin", "permanent": true },
+    { "source": "/admin-requests.html", "destination": "/admin-requests", "permanent": true }
   ],
   "functions": {
     "api/submit-contact.ts": {

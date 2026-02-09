@@ -8,6 +8,7 @@ import { initHeroCarousel } from './hero-carousel';
 import { initServicesHorizontalScroll } from './services-horizontal-scroll';
 import { initFloatingContact } from './floating-contact';
 import { initWhyUsCarousel } from './why-us-carousel';
+import { initNotifications } from './notifications';
 
 function init(): void {
   initMobileNav();
@@ -20,6 +21,7 @@ function init(): void {
   initServicesHorizontalScroll();
   initWhyUsCarousel();
   initFloatingContact();
+  initNotifications();
 }
 
 if (document.readyState === 'loading') {

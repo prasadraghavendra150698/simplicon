@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0c4a6e">
+    <title>Ticket Detail | Admin - Simplicon Tax Advisors LLP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <header class="header">
+        <nav class="nav container">
+            <a href="/" class="logo">
+                <img src="/Simplicon_logo.png" alt="Simplicon Logo" class="logo-img" width="180" height="48">
+            </a>
+            <div class="nav-right">
+                <div class="nav-notifications" id="navNotificationsBtn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                        </path>
+                    </svg>
+                    <span class="nav-notifications-badge" id="navNotificationsBadge" hidden>0</span>
+                </div>
+                <div class="portal-user-meta">
+                    <span class="portal-role-badge" id="adminRoleBadge"></span>
+                    <span class="portal-user-name" id="adminUserName">Loading...</span>
+                </div>
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/admin">Dashboard</a></li>
+                <li><a href="/admin-requests">All Tickets</a></li>
+                <li id="leadAdminMenu" hidden><a href="/admin-access">Access Requests</a></li>
+                <li id="membersMenu"><a href="/admin-members">Members</a></li>
+                <li><a href="#" id="adminSignOutBtn">Sign out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container py-4">
+        <!-- Ticket Header (ServiceNow Style) -->
+        <div class="portal-header-clean">
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <a href="/admin-requests" class="btn btn-secondary btn-sm" style="height: fit-content;">← Back</a>
+                <div class="ticket-status-summary">
+                    <span class="text-muted small">Active Request</span>
+                    <h1 id="ticketNoHeader"
+                        style="margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: var(--primary); font-size: 1.75rem;">
+                        #REQ-000000</h1>
+                    <p class="text-muted" id="ticketServiceName" style="font-weight: 600; font-size: 0.9rem;">Service
+                        Name</p>
+                </div>
+            </div>
+            <div class="ticket-header-actions">
+                <button class="btn btn-secondary btn-sm" id="downloadAllBtn">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        style="margin-right: 0.5rem; display: inline-block; vertical-align: middle;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Download Archives
+                </button>
+            </div>
+        </div>
+
+        <div class="request-detail-grid">
+            <!-- Left Column: Main Case Info -->
+            <div class="detail-main-card">
+                <!-- Case Summary -->
+                <div class="portal-card">
+                    <div class="portal-detail-head">
+                        <h3 class="portal-card-title--sm">Case Overview</h3>
+                        <span class="portal-badge portal-badge--lg" id="ticketStatusBadge">Status</span>
+                    </div>
+                    <div class="detail-info-grid">
+                        <div class="detail-info-item">
+                            <span class="detail-info-label">Client Email</span>
+                            <div class="detail-info-value" id="ticketClientEmail">...</div>
+                        </div>
+                        <div class="detail-info-item">
+                            <span class="detail-info-label">Client Name</span>
+                            <div class="detail-info-value" id="ticketClientFullName">...</div>
+                        </div>
+                        <div class="detail-info-item">
+                            <span class="detail-info-label">Created Date</span>
+                            <div class="detail-info-value" id="ticketCreatedDate">...</div>
+                        </div>
+                        <div class="detail-info-item">
+                            <span class="detail-info-label">Assigned To</span>
+                            <div class="detail-info-value" id="ticketAssignee">...</div>
+                        </div>
+                        <div class="detail-info-item">
+                            <span class="detail-info-label">Deadline</span>
+                            <div class="detail-info-value" id="ticketDeadline" style="color: #dc2626;">—</div>
+                        </div>
+                        <div class="detail-info-item">
+                            <span class="detail-info-label">Tax Year</span>
+                            <div class="detail-info-value" id="ticketTaxYear">—</div>
+                        </div>
+                        <div class="detail-info-item">
+                            <span class="detail-info-label">Client Phone</span>
+                            <div class="detail-info-value" id="ticketClientPhone">—</div>
+                        </div>
+                        <div class="detail-info-item"
+                            style="grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 0.5rem;">
+                            <span class="detail-info-label">Inquiry / Notes</span>
+                            <div class="detail-info-value" id="ticketNotes" style="font-weight: 400; line-height: 1.6;">
+                                No notes provided.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documents Section -->
+            <div class="portal-card" style="margin-top: 1.5rem;">
+                <div class="portal-detail-head" style="margin-bottom: 1.5rem;">
+                    <h3 class="portal-card-title--sm">Documents & Files</h3>
+                    <div class="portal-admin-actions">
+                        <button class="btn btn-secondary btn-sm" id="downloadAllBtn">Download All</button>
+                        <div class="portal-doc-upload-btn btn btn-primary btn-sm">
+                            + Add File
+                            <input type="file" class="portal-doc-upload-input" id="adminFileUpload">
+                        </div>
+                    </div>
+                </div>
+                <div class="portal-docs-list" id="ticketDocsList">
+                    <div class="portal-empty">No documents found.</div>
+                </div>
+
+                <div class="upload-progress-container" id="adminUploadProgress" hidden>
+                    <div class="upload-status-text">Uploading to client folder...</div>
+                    <div class="upload-progress-bar">
+                        <div class="upload-progress-fill" id="adminUploadFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comment Section (ServiceNow Style Bottom) -->
+            <div class="portal-card" style="margin-top: 1.5rem;">
+                <h3 class="portal-card-title--sm">Work Notes & Communications</h3>
+                <div class="comment-thread" id="ticketMessagesList">
+                    <div class="portal-empty">No comments yet.</div>
+                </div>
+
+                <div class="portal-divider"></div>
+
+                <form id="ticketMessageForm">
+                    <div class="form-group">
+                        <textarea id="ticketMessageText" rows="3"
+                            placeholder="Type a work note or message to client..."></textarea>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 0.5rem;">
+                        <button class="btn btn-primary" type="submit">Post Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Column: Admin Tools -->
+        <div class="detail-side-card">
+            <!-- Client Info Card -->
+            <div class="portal-card">
+                <h3 class="portal-card-title--sm">Client Profile</h3>
+                <div class="detail-info-item" style="margin-bottom: 1rem;">
+                    <span class="detail-info-label">Assigned Consultant</span>
+                    <div class="detail-info-value" id="ticketAssigneeSide">Unassigned</div>
+                </div>
+                <div class="detail-info-item">
+                    <span class="detail-info-label">Contact Link</span>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <a id="clientMailLink" href="#" class="btn btn-secondary btn-sm"
+                            style="flex: 1; padding: 0.5rem; text-align: center;">Message</a>
+                        <a id="clientPhoneLink" href="#" class="btn btn-secondary btn-sm"
+                            style="flex: 1; padding: 0.5rem; text-align: center;">Call</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Management -->
+            <div class="portal-card">
+                <h3 class="portal-card-title--sm">Ticket Lifecycle</h3>
+                <div class="form-group">
+                    <label for="statusSelect">Transition to State</label>
+                    <select id="statusSelect" class="form-control">
+                        <option value="Open">Open</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Work in Progress">Work in Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary btn-full" id="updateStatusBtn" style="margin-top: 1rem;">Update
+                    Status</button>
+            </div>
+
+            <!-- Case Assignment (Super Admin Only) -->
+            <div id="assignmentToolsCard" class="portal-card" hidden>
+                <h3 class="portal-card-title--sm">Consultant Assignment</h3>
+                <div class="form-group">
+                    <label for="assigneeSelect">Assign to Agent</label>
+                    <select id="assigneeSelect" class="form-control"></select>
+                </div>
+                <button class="btn btn-secondary btn-full" id="reassignBtn" style="margin-top: 1rem;">Update
+                    Assignee</button>
+                <p class="auth-hint" style="margin-top: 0.75rem; font-size: 0.8rem;">Changes here will update the
+                    consultant queue.</p>
+            </div>
+        </div>
+        </div>
+
+        <!-- Notification Popup -->
+        <div class="efiling-popup-overlay" id="notificationOverlay">
+            <div class="efiling-popup">
+                <button class="efiling-popup-close" id="notificationClose">&times;</button>
+                <div class="efiling-popup-title">Notifications</div>
+                <div class="portal-list" id="notificationList">
+                    <div class="portal-empty">No new notifications</div>
+                </div>
+                <button class="btn btn-secondary btn-sm btn-full" style="margin-top:1rem;" id="markReadBtn">Mark all as
+                    read</button>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/admin-detail-page.ts"></script>
+</body>
+
+</html>

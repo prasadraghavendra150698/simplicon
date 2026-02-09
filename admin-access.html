@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0c4a6e">
+    <title>Access Requests | Admin - Simplicon Tax Advisors LLP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <header class="header">
+        <nav class="nav container">
+            <a href="/" class="logo">
+                <img src="/Simplicon_logo.png" alt="Simplicon Logo" class="logo-img" width="180" height="48">
+            </a>
+            <div class="nav-right">
+                <div class="nav-notifications" id="navNotificationsBtn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                        </path>
+                    </svg>
+                    <span class="nav-notifications-badge" id="navNotificationsBadge" hidden>0</span>
+                </div>
+                <div class="portal-user-meta">
+                    <span class="portal-role-badge" id="adminRoleBadge"></span>
+                    <span class="portal-user-name" id="adminUserName">Loading...</span>
+                </div>
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/admin">Dashboard</a></li>
+                <li><a href="/admin-requests">All Tickets</a></li>
+                <li id="leadAdminMenu"><a href="/admin-access" class="active">Access Requests</a></li>
+                <li id="membersMenu"><a href="/admin-members">Members</a></li>
+                <li><a href="#" id="adminSignOutBtn">Sign out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container py-4">
+        <div class="portal-header-clean">
+            <div>
+                <h1>Internal Access Management</h1>
+                <p class="text-muted">Approve or deny requests for administrative access.</p>
+            </div>
+        </div>
+
+        <div class="portal-card">
+            <h3 class="portal-card-title--sm">Pending Access Requests</h3>
+            <div class="portal-list" id="accessRequestsList">
+                <div class="portal-empty">Loading requests...</div>
+            </div>
+        </div>
+
+        <div class="portal-card" style="margin-top: 2rem;">
+            <h3 class="portal-card-title--sm">Active Administrators</h3>
+            <div class="portal-list" id="activeAdminsList">
+                <div class="portal-empty">Loading admins...</div>
+            </div>
+        </div>
+
+        <div class="portal-card" style="margin-top: 2rem;">
+            <h3 class="portal-card-title--sm">Identity Security Policy</h3>
+            <p class="small text-muted">Only Super Admins can approve internal access. Granting access allows the user
+                to view client data and manage tax filings.</p>
+        </div>
+        <!-- Notification Popup -->
+        <div class="efiling-popup-overlay" id="notificationOverlay">
+            <div class="efiling-popup">
+                <button class="efiling-popup-close" id="notificationClose">&times;</button>
+                <div class="efiling-popup-title">Notifications</div>
+                <div class="portal-list" id="notificationList">
+                    <div class="portal-empty">No new notifications</div>
+                </div>
+                <button class="btn btn-secondary btn-sm btn-full" style="margin-top:1rem;" id="markReadBtn">Mark all as
+                    read</button>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/admin-access-page.ts"></script>
+</body>
+
+</html>

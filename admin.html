@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0c4a6e">
+    <title>Admin Dashboard | Simplicon Tax Advisors LLP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <header class="header">
+        <nav class="nav container">
+            <a href="/" class="logo">
+                <img src="/Simplicon_logo.png" alt="Simplicon Logo" class="logo-img" width="180" height="48">
+            </a>
+            <div class="nav-right">
+                <div class="nav-notifications" id="navNotificationsBtn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                        </path>
+                    </svg>
+                    <span class="nav-notifications-badge" id="navNotificationsBadge" hidden>0</span>
+                </div>
+                <div class="portal-user-meta">
+                    <span class="portal-role-badge" id="adminRoleBadge"></span>
+                    <span class="portal-user-name" id="adminUserName">Loading...</span>
+                </div>
+                <!-- Nav toggle hidden on desktop by CSS -->
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/admin" class="active">Dashboard</a></li>
+                <li><a href="/admin-requests">All Tickets</a></li>
+                <li id="leadAdminMenu" hidden><a href="/admin-access">Access Requests</a></li>
+                <li id="membersMenu"><a href="/admin-members">Members</a></li>
+                <li><a href="#" id="adminSignOutBtn">Sign out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container py-4">
+        <div class="portal-header-clean">
+            <div>
+                <h1 id="dashboardTitle">Command Center</h1>
+            </div>
+        </div>
+
+        <!-- Big ServiceNow Stats View -->
+        <div class="portal-stats-dashboard">
+            <a href="/admin-requests?filter=all" class="portal-stat-card">
+                <span class="portal-stat-label">Total Cases</span>
+                <span class="portal-stat-value" id="statsTotal">0</span>
+            </a>
+            <a href="/admin-requests?filter=assigned" class="portal-stat-card stat-primary">
+                <span class="portal-stat-label">My Assigned</span>
+                <span class="portal-stat-value" id="statsAssigned">0</span>
+            </a>
+            <a href="/admin-requests?filter=Open" class="portal-stat-card">
+                <span class="portal-stat-label">New / Open</span>
+                <span class="portal-stat-value" id="statsOpen">0</span>
+            </a>
+            <a href="/admin-requests?filter=Work in Progress" class="portal-stat-card">
+                <span class="portal-stat-label">In Progress</span>
+                <span class="portal-stat-value" id="statsWIP">0</span>
+            </a>
+            <a href="/admin-requests?filter=Pending" class="portal-stat-card">
+                <span class="portal-stat-label">Pending</span>
+                <span class="portal-stat-value" id="statsPending">0</span>
+            </a>
+            <a href="/admin-requests?filter=Completed" class="portal-stat-card">
+                <span class="portal-stat-label">Completed</span>
+                <span class="portal-stat-value" id="statsCompleted">0</span>
+            </a>
+        </div>
+
+        <div class="portal-grid" style="grid-template-columns: 1fr 1fr; margin-top: 2rem;">
+            <!-- Recent Activity -->
+            <div class="portal-card">
+                <h3 class="portal-card-title--sm">Recent Ticket Activity</h3>
+                <div class="portal-list" id="recentActivityList">
+                    <div class="portal-empty">No recent activity.</div>
+                </div>
+                <div style="margin-top: 1rem; text-align: center;">
+                    <a href="/admin-requests" class="btn btn-secondary btn-sm">View All Tickets</a>
+                </div>
+            </div>
+
+            <!-- Super Admin Controls -->
+            <div id="superAdminQueueCard" class="portal-card" hidden>
+                <h3 class="portal-card-title--sm">Super Admin Tools</h3>
+                <p class="portal-card-subtitle">Manage unassigned work and system state.</p>
+                <div class="portal-list" id="unassignedWorkList" style="margin-bottom: 1.5rem;">
+                    <div class="portal-empty">Everything is assigned!</div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                    <h4 class="portal-card-title--sm" style="color: #dc2626;">Danger Zone</h4>
+                    <p class="small text-muted">Permanently delete all requests and reset the REQ sequence.</p>
+                    <button id="resetSystemBtn" class="btn btn-secondary btn-sm"
+                        style="margin-top: 0.5rem; color: #dc2626; border-color: #dc2626;">
+                        Reset All Requests
+                    </button>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Notification Popup -->
+        <div class="efiling-popup-overlay" id="notificationOverlay">
+            <div class="efiling-popup">
+                <button class="efiling-popup-close" id="notificationClose">&times;</button>
+                <div class="efiling-popup-title">Notifications</div>
+                <div class="portal-list" id="notificationList">
+                    <div class="portal-empty">No new notifications</div>
+                </div>
+                <button class="btn btn-secondary btn-sm btn-full" style="margin-top:1rem;" id="markReadBtn">Mark all as
+                    read</button>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/admin-dashboard.ts"></script>
+</body>
+
+</html>

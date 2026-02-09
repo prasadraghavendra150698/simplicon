@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0c4a6e">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=yes">
+    <title>Client Portal - Sign In | Simplicon Tax Advisors LLP</title>
+    <meta name="description"
+        content="Sign in or create an account to upload documents for your tax filing service with Simplicon Tax Advisors LLP.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="/" class="logo">
+                <img src="/Simplicon_logo.png" alt="Simplicon Tax Advisors LLP - US Tax Filing" class="logo-img"
+                    fetchpriority="high" width="180" height="48">
+            </a>
+            <div class="nav-right">
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/resources">Resources</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+                <li><a href="/auth" class="btn btn-sm btn-primary active"
+                        style="color:white; padding: 0.5rem 1rem;">Sign In / Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="page-hero">
+            <div class="container">
+                <h1>Client Portal</h1>
+                <p>Sign in or create an account to upload documents</p>
+            </div>
+        </section>
+
+        <section class="auth-section">
+            <div class="container">
+                <div class="auth-card" id="authCard">
+                    <div class="auth-tabs" role="tablist" aria-label="Authentication tabs">
+                        <button class="auth-tab auth-tab--active" type="button" role="tab" aria-selected="true"
+                            aria-controls="signinPanel" id="signinTab">Sign in</button>
+                        <button class="auth-tab" type="button" role="tab" aria-selected="false"
+                            aria-controls="signupPanel" id="signupTab">Create account</button>
+                    </div>
+
+                    <div class="auth-panel auth-panel--active" id="signinPanel" role="tabpanel"
+                        aria-labelledby="signinTab">
+                        <form class="auth-form" id="signInForm" novalidate>
+                            <div class="auth-role">
+                                <div class="auth-role-label">Sign in as</div>
+                                <div class="auth-role-options" role="radiogroup" aria-label="Account type">
+                                    <label class="auth-role-option">
+                                        <input type="radio" name="signinRole" value="client" checked>
+                                        <span>Client</span>
+                                    </label>
+                                    <label class="auth-role-option">
+                                        <input type="radio" name="signinRole" value="internal">
+                                        <span>Internal</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="signinEmail">Email *</label>
+                                <input id="signinEmail" name="email" type="email" autocomplete="email" required
+                                    placeholder="you@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="signinPassword">Password *</label>
+                                <div class="password-wrapper">
+                                    <input id="signinPassword" name="password" type="password"
+                                        autocomplete="current-password" required placeholder="Enter your password"
+                                        style="padding-right: 40px;">
+                                    <button type="button" class="password-toggle" id="toggleSigninPassword"
+                                        aria-label="Show password">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <a href="#" class="auth-forgot-link" id="forgotPasswordBtn">Forgot Password?</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full" id="signInBtn">
+                                <span class="btn-text">Sign in</span>
+                                <span class="btn-spinner" aria-hidden="true"></span>
+                            </button>
+                            <p class="auth-hint">Having trouble? Contact us at <a
+                                    href="mailto:info@simplicontax.com">info@simplicontax.com</a>.</p>
+                        </form>
+                    </div>
+
+                    <div class="auth-panel" id="signupPanel" role="tabpanel" aria-labelledby="signupTab" hidden>
+                        <form class="auth-form" id="signUpForm" novalidate>
+                            <div class="auth-role">
+                                <div class="auth-role-label">Create account as</div>
+                                <div class="auth-role-options" role="radiogroup" aria-label="Account type">
+                                    <label class="auth-role-option">
+                                        <input type="radio" name="signupRole" value="client" checked>
+                                        <span>Client</span>
+                                    </label>
+                                    <label class="auth-role-option">
+                                        <input type="radio" name="signupRole" value="internal">
+                                        <span>Internal</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="signupName">Full Name *</label>
+                                <input id="signupName" name="full_name" type="text" autocomplete="name" required
+                                    placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="signupEmail">Email *</label>
+                                <input id="signupEmail" name="email" type="email" autocomplete="email" required
+                                    placeholder="you@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="signupPassword">Password *</label>
+                                <div class="password-wrapper">
+                                    <input id="signupPassword" name="password" type="password"
+                                        autocomplete="new-password" required
+                                        placeholder="Create a password (min. 8 chars)" style="padding-right: 40px;">
+                                    <button type="button" class="password-toggle" id="toggleSignupPassword"
+                                        aria-label="Show password">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="signupPassword2">Confirm password *</label>
+                                <div class="password-wrapper">
+                                    <input id="signupPassword2" name="password2" type="password"
+                                        autocomplete="new-password" required placeholder="Re-enter password"
+                                        style="padding-right: 40px;">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full" id="signUpBtn">
+                                <span class="btn-text">Create account</span>
+                                <span class="btn-spinner" aria-hidden="true"></span>
+                            </button>
+                            <p class="auth-hint">Internal accounts require admin approval before accessing the admin
+                                dashboard.</p>
+                        </form>
+                    </div>
+
+                    <!-- Forgot Password Modal -->
+                    <div id="forgotPasswordModal" class="efiling-popup-overlay">
+                        <div class="efiling-popup">
+                            <button class="efiling-popup-close" id="closeForgotModal">×</button>
+                            <h3 class="efiling-popup-title">Reset Password</h3>
+                            <p class="efiling-popup-message" style="margin-bottom: 1.5rem;">Enter your email address and
+                                we'll send you a link to reset your password.</p>
+
+                            <form id="forgotPasswordForm" class="auth-form">
+                                <div class="form-group">
+                                    <label for="forgotEmail">Email Address</label>
+                                    <input id="forgotEmail" type="email" required placeholder="you@example.com">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-full" id="sendResetBtn">
+                                    <span class="btn-text">Send Reset Link</span>
+                                    <span class="btn-spinner"></span>
+                                </button>
+                            </form>
+                            <div id="forgotMessage" class="auth-note" hidden
+                                style="margin: 1rem 0 0; padding: 0.75rem;"></div>
+                        </div>
+                    </div>
+
+                    <div class="auth-note" id="authNote" aria-live="polite" hidden></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <img src="/Simplicon_logo.png" alt="Simplicon Tax Advisors LLP - US Tax Filing" class="logo-img"
+                            loading="lazy" width="180" height="48">
+                    </a>
+                    <p>Simplicon Tax Advisors LLP is a dedicated US Tax Filing Company founded in 2020. We offer a wide
+                        range of services to Salaried, Self-Employed & High Net worth Individuals and Small Business
+                        Enterprises with respect to filing of Income Tax returns in USA.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About us</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/pricing">Pricing</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/auth">Client Portal</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Head Office</h4>
+                    <p><strong>Simplicon Tax Advisors LLP</strong><br>7th Phase, Vivekananda Nagar,
+                        Kukatpally<br>Hyderabad, Telangana, India - 500072</p>
+                    <a href="mailto:info@simplicontax.com">info@simplicontax.com</a>
+                    <p><a href="tel:+917093207787">+91 7093207787</a> | <a href="tel:+917095725073">+91 7095725073</a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Simplicon Tax Advisors LLP. All Rights Reserved</p>
+                <p class="footer-registered">Registered as Simplicon Tax Advisors LLP | Trading as Simplicon Tax</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/auth-page.ts"></script>
+</body>
+
+</html>

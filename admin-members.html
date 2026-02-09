@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0c4a6e">
+    <title>Members Management | Admin - Simplicon Tax Advisors LLP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="preload" href="styles.css" as="style">apis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <header class="header">
+        <nav class="nav container">
+            <a href="/" class="logo">
+                <img src="/Simplicon_logo.png" alt="Simplicon Logo" class="logo-img" width="180" height="48">
+            </a>
+            <div class="nav-right">
+                <div class="nav-notifications" id="navNotificationsBtn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                        </path>
+                    </svg>
+                    <span class="nav-notifications-badge" id="navNotificationsBadge" hidden>0</span>
+                </div>
+                <div class="portal-user-meta">
+                    <span class="portal-role-badge" id="adminRoleBadge"></span>
+                    <span class="portal-user-name" id="adminUserName">Loading...</span>
+                </div>
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/admin">Dashboard</a></li>
+                <li><a href="/admin-requests">All Tickets</a></li>
+                <li id="leadAdminMenu"><a href="/admin-access">Access Requests</a></li>
+                <li id="membersMenu"><a href="/admin-members" class="active">Members</a></li>
+                <li><a href="#" id="adminSignOutBtn">Sign out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container py-4">
+        <div class="portal-header-clean">
+            <div>
+                <h1>Members Management</h1>
+                <p class="text-muted">Manage client and internal user accounts.</p>
+            </div>
+        </div>
+
+        <div class="portal-card">
+            <!-- Tabs -->
+            <div class="auth-tabs"
+                style="border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid var(--border); border-bottom: none;">
+                <button class="auth-tab auth-tab--active" id="clientsTab">Clients</button>
+                <button class="auth-tab" id="internalTab">Internal Team</button>
+            </div>
+
+            <!-- Clients Panel -->
+            <div class="auth-panel auth-panel--active" id="clientsPanel"
+                style="border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px;">
+                <div class="portal-requests-toolbar" style="margin-bottom: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                        <input id="membersSearch" type="search" placeholder="Search by name or email..."
+                            class="form-control" style="width: 100%;">
+                    </div>
+                </div>
+                <div class="portal-list" id="clientsList">
+                    <div class="portal-empty">Loading clients...</div>
+                </div>
+            </div>
+
+            <!-- Internal Panel -->
+            <div class="auth-panel" id="internalPanel" hidden
+                style="border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px;">
+                <div class="portal-list" id="internalList">
+                    <div class="portal-empty">Loading team...</div>
+                </div>
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                    <p class="small text-muted">To add new internal members, they must sign up as "Internal" and request
+                        approval.</p>
+                    <a href="/admin-access" class="btn btn-secondary btn-sm">Go to Access Requests</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Popup -->
+        <div class="efiling-popup-overlay" id="notificationOverlay">
+            <div class="efiling-popup">
+                <button class="efiling-popup-close" id="notificationClose">&times;</button>
+                <div class="efiling-popup-title">Notifications</div>
+                <div class="portal-list" id="notificationList">
+                    <div class="portal-empty">No new notifications</div>
+                </div>
+                <button class="btn btn-secondary btn-sm btn-full" style="margin-top:1rem;" id="markReadBtn">Mark all as
+                    read</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Simplicon Tax Advisors LLP. All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/admin-members-page.ts"></script>
+</body>
+
+</html>

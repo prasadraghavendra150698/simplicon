@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0c4a6e">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=yes">
+    <title>Client Portal | Simplicon Tax Advisors LLP</title>
+    <meta name="description"
+        content="Upload documents and track your tax filing request with Simplicon Tax Advisors LLP.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="portal-body">
+    <!-- Navigation -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="/" class="logo">
+                <img src="/Simplicon_logo.png" alt="Simplicon Tax Advisors LLP - US Tax Filing" class="logo-img"
+                    fetchpriority="high" width="180" height="48">
+            </a>
+            <div class="nav-right">
+                <div class="nav-notifications" id="navNotifications" data-tooltip="Notifications">
+                    <span class="nav-notifications-icon">🔔</span>
+                    <span class="nav-notifications-badge" id="notifBadge" hidden>0</span>
+                </div>
+                <div class="portal-user-meta">
+                    <span class="portal-role-badge">Client</span>
+                    <span class="portal-user-name" id="portalUserName">Loading...</span>
+                </div>
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/portal" class="active">Portal</a></li>
+                <li><a href="/contact">Support</a></li>
+                <li><a class="portal-admin-link" id="portalAdminLink" href="/admin" hidden>Admin Panel</a></li>
+                <li><a href="#" id="portalSignOutBtn">Sign out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="portal-section">
+            <div class="container">
+                <div class="portal-header-clean">
+                    <h1>My Requests</h1>
+                    <button class="btn btn-primary" id="showNewRequestBtn">+ New Tax Request</button>
+                </div>
+
+                <div class="portal-grid">
+                    <!-- Left: Request List -->
+                    <div class="portal-card">
+                        <div class="portal-list" id="submissionsList">
+                            <div class="portal-empty">Loading your requests...</div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Dedicated Request Screen (Dynamic) -->
+                    <div class="portal-card" id="requestDetailCard">
+                        <div class="portal-empty" id="emptyDetailState">
+                            <h3>Select a request to view details</h3>
+                            <p>All your documents, messages, and status updates will appear here.</p>
+                        </div>
+
+                        <div id="requestDetailContent" hidden>
+                            <div class="portal-detail-head">
+                                <div>
+                                    <span class="detail-info-label">Request ID</span>
+                                    <h2 class="portal-card-title" id="detailReqNo"
+                                        style="font-size: 1.75rem; color: var(--primary);">#REQ-0000000</h2>
+                                    <p class="portal-card-subtitle" id="detailServiceName" style="font-weight: 600;">
+                                        Service Name</p>
+                                </div>
+                                <div class="portal-detail-actions">
+                                    <span class="portal-badge portal-badge--lg" id="detailStatusBadge">Status</span>
+                                </div>
+                            </div>
+
+                            <div class="detail-info-grid" style="margin-bottom: 2rem;">
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Current Status</span>
+                                    <div class="detail-info-value" id="infoStatus">...</div>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Financial Year</span>
+                                    <div class="detail-info-value" id="infoTaxYear">...</div>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Consultant</span>
+                                    <div class="detail-info-value" id="infoAssignee">Seeking Consultant...</div>
+                                </div>
+                                <div class="detail-info-item">
+                                    <span class="detail-info-label">Target Date</span>
+                                    <div class="detail-info-value" id="infoDeadline" style="color: #dc2626;">—</div>
+                                </div>
+                            </div>
+
+                            <div class="portal-docs">
+                                <div class="portal-detail-head" style="margin-bottom: 1rem;">
+                                    <h3 class="portal-card-title--sm">Shared Documents</h3>
+                                    <button class="btn btn-secondary btn-sm" id="downloadAllBtn">Download All</button>
+                                </div>
+                                <div class="portal-docs-list" id="docsList"></div>
+
+                                <div class="upload-progress-container" id="uploadProgress" hidden>
+                                    <div class="upload-status-text">Uploading documents...</div>
+                                    <div class="upload-progress-bar">
+                                        <div class="upload-progress-fill" id="uploadProgressBar"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="portal-divider"></div>
+
+                            <div class="portal-messages">
+                                <h3 class="portal-card-title--sm">Activity Timeline</h3>
+                                <div class="comment-thread" id="messagesList"></div>
+
+                                <form class="portal-message-form" id="messageForm" style="margin-top: 1.5rem;">
+                                    <div class="form-group">
+                                        <textarea id="messageText" rows="2"
+                                            placeholder="Write a comment or update..."></textarea>
+                                    </div>
+                                    <button class="btn btn-primary" type="submit" id="sendMessageBtn">Post
+                                        Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- New Request Modal -->
+    <div id="newRequestModal" class="efiling-popup-overlay">
+        <div class="efiling-popup efiling-popup--lg">
+            <button class="efiling-popup-close" id="closeNewRequestModal">×</button>
+            <h2 class="efiling-popup-title">Start a New Request</h2>
+            <form id="newSubmissionForm" class="portal-form">
+                <div class="form-group">
+                    <label for="serviceSelect">Choose Tax Service *</label>
+                    <select id="serviceSelect" required>
+                        <option value="">Select a service</option>
+                    </select>
+                </div>
+                <div class="form-group-grid">
+                    <div class="form-group">
+                        <label for="taxYear">Tax Year *</label>
+                        <select id="taxYear" required>
+                            <option value="2025">2025</option>
+                            <option value="2024" selected>2024</option>
+                            <option value="2023">2023</option>
+                            <option value="Prior Years">Prior Years</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="deadlineDate">Target Deadline</label>
+                        <input type="date" id="deadlineDate">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientFullName">Full Name (as per Passport) *</label>
+                    <input type="text" id="clientFullName" placeholder="Your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientPhone">Phone Number *</label>
+                    <div class="phone-group">
+                        <select id="countryCode" name="countryCode" required>
+                            <option value="">Code</option>
+                            <option value="+1">USA (+1)</option>
+                            <option value="+91" selected>IND (+91)</option>
+                            <option value="+44">UK (+44)</option>
+                            <option value="+61">AUS (+61)</option>
+                            <option value="+81">JPN (+81)</option>
+                            <option value="+49">GER (+49)</option>
+                            <option value="+33">FRA (+33)</option>
+                            <option value="+86">CHN (+86)</option>
+                            <option value="+971">UAE (+971)</option>
+                            <option value="+1">CAN (+1)</option>
+                        </select>
+                        <input type="tel" id="clientPhone" placeholder="9876543210" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="requestNotes">Additional Notes / Inquiry</label>
+                    <textarea id="requestNotes" rows="3" placeholder="Tell us more about your situation..."></textarea>
+                </div>
+
+                <div class="portal-admin-actions">
+                    <button class="btn btn-secondary" type="button" id="cancelNewRequestBtn">Cancel</button>
+                    <button class="btn btn-primary" type="submit" id="createSubmissionBtn">
+                        <span class="btn-text">Create Ticket</span>
+                        <div class="btn-spinner"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Simplicon Tax Advisors LLP. All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Update Password Modal -->
+    <div id="updatePasswordModal" class="efiling-popup-overlay">
+        <div class="efiling-popup">
+            <button class="efiling-popup-close" id="closeUpdatePasswordModal">×</button>
+            <h3 class="efiling-popup-title">Update Password</h3>
+            <form id="updatePasswordForm" class="auth-form">
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input id="newPassword" type="password" required placeholder="Min. 8 characters">
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirm New Password</label>
+                    <input id="confirmNewPassword" type="password" required placeholder="Re-enter password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" id="updatePasswordBtn">
+                    <span class="btn-text">Update Password</span>
+                    <span class="btn-spinner"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/portal-page.ts"></script>
+</body>
+
+</html>
